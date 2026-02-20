@@ -269,10 +269,9 @@ def build_county_record(year: str, contest: str, county_label: str, fips: str, p
     two_party_total = dem_votes + rep_votes
     margin = abs(dem_votes - rep_votes)
 
-    # Keep competitiveness behavior the same (two-party signed margin),
-    # but compute margin_pct using total votes as requested.
-    if two_party_total > 0:
-        signed_margin_pct = ((dem_votes - rep_votes) / two_party_total) * 100.0
+    # Compute both competitiveness and margin_pct from total-vote margin.
+    if total_votes > 0:
+        signed_margin_pct = ((dem_votes - rep_votes) / total_votes) * 100.0
     else:
         signed_margin_pct = 0.0
 
