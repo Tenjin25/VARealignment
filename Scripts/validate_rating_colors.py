@@ -17,7 +17,7 @@ def to_scale_map(payload: dict) -> dict:
 
 
 def expected_competitiveness(dem_votes: int, rep_votes: int, total_votes: int, scale_map: dict) -> dict:
-    signed_margin_pct = ((dem_votes - rep_votes) / total_votes * 100.0) if total_votes > 0 else 0.0
+    signed_margin_pct = round(((dem_votes - rep_votes) / total_votes * 100.0), 2) if total_votes > 0 else 0.0
     abs_margin = abs(signed_margin_pct)
 
     if abs_margin < 0.5:
