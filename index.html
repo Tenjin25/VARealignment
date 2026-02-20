@@ -2097,34 +2097,34 @@ function toggleSidebar() {
   sidebarContent += `</div>`;
   
   // Use legend colors for competitiveness text (match the map legend exactly).
-  function competitivenessColorFor(party, category) {
+  function competitivenessColorFor(party, category, winner) {
     const scale = {
       Republican: {
-        Annihilation: '#67000d',
-        Dominant: '#a50f15',
-        Stronghold: '#cb181d',
-        Safe: '#ef3b2c',
-        Likely: '#fb6a4a',
-        Lean: '#fcae91',
-        Tilt: '#fee8c8',
+        Annihilation: '#450a0a',
+        Dominant: '#7f1d1d',
+        Stronghold: '#991b1b',
+        Safe: '#dc2626',
+        Likely: '#ef4444',
+        Lean: '#f87171',
+        Tilt: '#fca5a5',
       },
       Democratic: {
-        Tilt: '#e1f5fe',
-        Lean: '#c6dbef',
-        Likely: '#9ecae1',
-        Safe: '#6baed6',
-        Stronghold: '#3182bd',
-        Dominant: '#08519c',
-        Annihilation: '#08306b',
+        Tilt: '#bfdbfe',
+        Lean: '#93c5fd',
+        Likely: '#60a5fa',
+        Safe: '#3b82f6',
+        Stronghold: '#1e40af',
+        Dominant: '#1e3a8a',
+        Annihilation: '#0c1d56',
       },
       Tossup: {
-        Tossup: '#f7f7f7',
+        Tossup: winner === 'Democratic' ? '#2563eb' : (winner === 'Republican' ? '#dc2626' : '#6b7280'),
       },
     };
     return (scale[party] && scale[party][category]) ? scale[party][category] : '#6b7280';
   }
 
-  let finalCompColor = competitivenessColorFor(countyCompetitiveness?.party, countyCompetitiveness?.category);
+  let finalCompColor = competitivenessColorFor(countyCompetitiveness?.party, countyCompetitiveness?.category, winner);
   let finalCompLabel = countyCompLabel;
   
   sidebarContent += `<div class="competitiveness-section">`;
@@ -2584,23 +2584,23 @@ function toggleSidebar() {
             }
             let compColor = '#6b7280';
             if (competitiveness.includes('Rep')) {
-              if (competitiveness.includes('Annihilation')) compColor = '#67000d';
-              else if (competitiveness.includes('Dominant')) compColor = '#a50f15';
-              else if (competitiveness.includes('Stronghold')) compColor = '#cb181d';
-              else if (competitiveness.includes('Safe')) compColor = '#ef3b2c';
-              else if (competitiveness.includes('Likely')) compColor = '#fb6a4a';
-              else if (competitiveness.includes('Lean')) compColor = '#fcae91';
-              else if (competitiveness.includes('Tilt')) compColor = '#fee8c8';
+              if (competitiveness.includes('Annihilation')) compColor = '#450a0a';
+              else if (competitiveness.includes('Dominant')) compColor = '#7f1d1d';
+              else if (competitiveness.includes('Stronghold')) compColor = '#991b1b';
+              else if (competitiveness.includes('Safe')) compColor = '#dc2626';
+              else if (competitiveness.includes('Likely')) compColor = '#ef4444';
+              else if (competitiveness.includes('Lean')) compColor = '#f87171';
+              else if (competitiveness.includes('Tilt')) compColor = '#fca5a5';
             } else if (competitiveness.includes('Dem')) {
-              if (competitiveness.includes('Annihilation')) compColor = '#08306b';
-              else if (competitiveness.includes('Dominant')) compColor = '#08519c';
-              else if (competitiveness.includes('Stronghold')) compColor = '#3182bd';
-              else if (competitiveness.includes('Safe')) compColor = '#6baed6';
-              else if (competitiveness.includes('Likely')) compColor = '#9ecae1';
-              else if (competitiveness.includes('Lean')) compColor = '#c6dbef';
-              else if (competitiveness.includes('Tilt')) compColor = '#e1f5fe';
+              if (competitiveness.includes('Annihilation')) compColor = '#0c1d56';
+              else if (competitiveness.includes('Dominant')) compColor = '#1e3a8a';
+              else if (competitiveness.includes('Stronghold')) compColor = '#1e40af';
+              else if (competitiveness.includes('Safe')) compColor = '#3b82f6';
+              else if (competitiveness.includes('Likely')) compColor = '#60a5fa';
+              else if (competitiveness.includes('Lean')) compColor = '#93c5fd';
+              else if (competitiveness.includes('Tilt')) compColor = '#bfdbfe';
             } else if (competitiveness.includes('Tossup')) {
-              compColor = '#f7f7f7';
+              compColor = winner === 'Democratic' ? '#2563eb' : '#dc2626';
             }
             
             electionInfo = `
