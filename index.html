@@ -1978,7 +1978,7 @@ function toggleSidebar() {
       
       // Margin calculation and winner determination
       const margin = demVotes - repVotes;
-      // Use two-party margin percentage from JSON data (margin as % of two-party vote)
+      // margin_pct is stored as margin % of total votes in the aggregated JSON.
       const marginPct = parseFloat(countyData.margin_pct) || 0;
       // Determine winner from vote counts since winner field doesn't exist in data
       const winner = demVotes > repVotes ? 'Democratic' : (repVotes > demVotes ? 'Republican' : 'Tie');
@@ -1988,30 +1988,18 @@ function toggleSidebar() {
       // Get competitiveness from the data
       // Use competitiveness from countyData, fallback to contest-level if present
       let countyCompetitiveness = countyData.competitiveness || {};
-      if ((!countyCompetitiveness.description || countyCompetitiveness.description === 'Unknown') && currentContest?.data?.competitiveness) {
+      if ((!countyCompetitiveness.category || !countyCompetitiveness.party) && currentContest?.data?.competitiveness) {
         countyCompetitiveness = currentContest.data.competitiveness;
       }
-      const countyCompColor = countyCompetitiveness.color || '#6b7280';
-        // Always assign competitiveness category based on rounded margin percentage
-        let countyCompLabel = '';
-        const roundedMargin = Math.round(marginPct * 100) / 100;
-        if (roundedMargin >= 40) {
-          countyCompLabel = winner === 'Republican' ? "Annihilation Republican" : "Annihilation Democratic";
-        } else if (roundedMargin >= 30) {
-          countyCompLabel = winner === 'Republican' ? "Dominant Republican" : "Dominant Democratic";
-        } else if (roundedMargin >= 20) {
-          countyCompLabel = winner === 'Republican' ? "Stronghold Republican" : "Stronghold Democratic";
-        } else if (roundedMargin >= 10) {
-          countyCompLabel = winner === 'Republican' ? "Safe Republican" : "Safe Democratic";
-        } else if (roundedMargin >= 5.5) {
-          countyCompLabel = winner === 'Republican' ? "Likely Republican" : "Likely Democratic";
-        } else if (roundedMargin >= 1) {
-          countyCompLabel = winner === 'Republican' ? "Lean Republican" : "Lean Democratic";
-        } else if (roundedMargin >= 0.5) {
-          countyCompLabel = winner === 'Republican' ? "Tilt Republican" : "Tilt Democratic";
-        } else {
-          countyCompLabel = winner === 'Democratic' ? 'Tossup (Democratic Win)' : (winner === 'Republican' ? 'Tossup (Republican Win)' : 'Tossup (Tie)');
-        }
+      let countyCompLabel = '';
+      if (countyCompetitiveness?.category && countyCompetitiveness?.party) {
+        countyCompLabel = countyCompetitiveness.party === 'Tossup'
+          ? 'Tossup'
+          : `${countyCompetitiveness.category} ${countyCompetitiveness.party}`;
+      } else {
+        // Fallback if competitiveness is missing in data.
+        countyCompLabel = winner === 'Republican' ? 'Unknown Republican' : (winner === 'Democratic' ? 'Unknown Democratic' : 'Unknown');
+      }
       // Accessibility palette for winner color
       function cbColorForMargin(marginPct, winner) {
         if (marginPct >= 40) {
@@ -2072,6 +2060,7 @@ function toggleSidebar() {
   }
   sidebarContent += `<p class="sidebar-margin" style="color: ${marginColor}; font-weight: bold;">${winner === 'Republican' ? 'R+' : 'D+'}${marginPct.toFixed(2)}%</p>`;
   sidebarContent += `<p class="sidebar-margin-details" style="color: #6b7280;">(${Math.abs(margin).toLocaleString()} vote margin)</p>`;
+  sidebarContent += `<p class="sidebar-margin-details" style="color: #6b7280;">Margin % uses total votes. Rating uses two-party margin.</p>`;
   sidebarContent += `</div>`;
   sidebarContent += `<div class="vote-breakdown">`;
   sidebarContent += '<h3 class="sidebar-section-title">🗳️ Vote Breakdown</h3>';
@@ -2104,35 +2093,9 @@ function toggleSidebar() {
   }
   sidebarContent += `</div>`;
   
-  // Competitiveness (use Florida map approach with JavaScript color calculation)
-  let finalCompColor = '#6b7280'; // Default gray
+  // Use the same competitiveness color/category source as map fill colors.
+  let finalCompColor = countyCompetitiveness?.color || '#6b7280';
   let finalCompLabel = countyCompLabel;
-  
-  // Handle tossup cases with better colors and formatting like FL map
-  if (countyCompLabel.includes('Tossup')) {
-    finalCompLabel = winner === 'Democratic' ? 'Tossup (Democratic Win)' : 'Tossup (Republican Win)';
-    finalCompColor = winner === 'Democratic' ? '#2563eb' : '#dc2626'; // Blue for Dem win, Red for Rep win
-  } else {
-    // Use Florida map color logic for all other categories
-      // Assign competitiveness color based on rounded margin percentage, matching the label
-      if (roundedMargin >= 40) {
-        finalCompColor = winner === 'Republican' ? '#67000d' : '#0c1d56';
-      } else if (roundedMargin >= 30) {
-        finalCompColor = winner === 'Republican' ? '#7f1d1d' : '#1e3a8a';
-      } else if (roundedMargin >= 20) {
-        finalCompColor = winner === 'Republican' ? '#991b1b' : '#1e40af';
-      } else if (roundedMargin >= 10) {
-        finalCompColor = winner === 'Republican' ? '#dc2626' : '#3b82f6';
-      } else if (roundedMargin >= 5.5) {
-        finalCompColor = winner === 'Republican' ? '#ef4444' : '#60a5fa';
-      } else if (roundedMargin >= 1) {
-        finalCompColor = winner === 'Republican' ? '#f87171' : '#93c5fd';
-      } else if (roundedMargin >= 0.5) {
-        finalCompColor = winner === 'Republican' ? '#fca5a5' : '#bfdbfe';
-      } else {
-        finalCompColor = winner === 'Democratic' ? '#2563eb' : (winner === 'Republican' ? '#dc2626' : '#64748b');
-      }
-  }
   
   sidebarContent += `<div class="competitiveness-section">`;
   sidebarContent += '<h3 class="sidebar-section-title">🎯 Competitiveness</h3>';
