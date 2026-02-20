@@ -267,16 +267,19 @@ def build_county_record(year: str, contest: str, county_label: str, fips: str, p
     rep_candidate = max(rep_rows, key=lambda r: r['votes'])['candidate'] if rep_rows else ''
 
     two_party_total = dem_votes + rep_votes
-    margin = abs(dem_votes - rep_votes)
+    vote_diff = dem_votes - rep_votes
+    margin = abs(vote_diff)
 
     # Compute both competitiveness and margin_pct from total-vote margin.
+    # Use rounded (2-decimal) signed margin for category thresholds so labels
+    # match displayed margin_pct at exact cut points.
     if total_votes > 0:
-        signed_margin_pct = ((dem_votes - rep_votes) / total_votes) * 100.0
+        signed_margin_pct = round((vote_diff / total_votes) * 100.0, 2)
     else:
         signed_margin_pct = 0.0
 
     if total_votes > 0:
-        margin_pct = (margin / total_votes) * 100.0
+        margin_pct = round((margin / total_votes) * 100.0, 2)
     else:
         # Fallback when no votes are present: compare top two overall candidates.
         sorted_rows = sorted(party_rows, key=lambda x: x['votes'], reverse=True)
