@@ -638,6 +638,11 @@ body {
   font-weight: 600 !important;
   margin-bottom: 2px !important;
 }
+.sidebar-competitiveness {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  margin-bottom: 2px !important;
+}
 .statewide-results {
   margin-bottom: 20px;
   padding: 16px;
@@ -2129,7 +2134,7 @@ function toggleSidebar() {
   
   sidebarContent += `<div class="competitiveness-section">`;
   sidebarContent += '<h3 class="sidebar-section-title">🎯 Competitiveness</h3>';
-  sidebarContent += `<p style="color: ${finalCompColor}; font-weight: bold;">${finalCompLabel}</p>`;
+  sidebarContent += `<p class="sidebar-competitiveness" style="color: ${finalCompColor};">${finalCompLabel}</p>`;
   // Add short, emphasized cues for very-close and extremely-close contests (matches CLEAN map UX)
   try {
     if (typeof countyCompLabel === 'string') {
