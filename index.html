@@ -1028,9 +1028,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // --- CONFIG ---
     const CONFIG = {
-      mapboxToken: 'pk.eyJ1Ijoic2hhbWFyZGF2aXMiLCJhIjoiY21kcW8yeDB2MDhvbTJzb29qeGp1aDZmZCJ9.Zw_i6U-dL7_bEKRHTUh7yg',
+      mapboxToken: (window.MAPBOX_TOKEN || localStorage.getItem('MAPBOX_TOKEN') || '').trim(),
       paths: {
-        counties: './Data/geo/tl_2020_51_county20.geojson',
+        counties: './Data/geo/va_counties_2020.geojson',
         election: './Data/va_county_aggregated_results.json'
       },
       center: [-78.5, 37.5], // Virginia center
@@ -2808,7 +2808,7 @@ function toggleSidebar() {
           throw new Error('No county features found');
         }
         
-        map.on('load', function() {
+        const attachCountiesToMap = function() {
           // Add counties to map safely
           if (map.getSource('counties')) {
             const layersToRemove = ['county-fill', 'county-border', 'county-stroke', 'county-outline', 'counties-fill', 'counties-stroke', 'county-label', 'counties-label'];
@@ -2824,22 +2824,27 @@ function toggleSidebar() {
             data: countiesData
           });
           addCountyLayers();
-        });
+        };
+        if (map.isStyleLoaded()) {
+          attachCountiesToMap();
+        } else {
+          map.once('load', attachCountiesToMap);
+        }
         // Initialize county search (autocomplete & zoom) once counties are added
         try { if (typeof setupCountySearch === 'function') setupCountySearch(); } catch(e) { console.warn('setupCountySearch failed', e); }
         
-        // Correct Mapbox GL JS bounds for North Carolina
-        var ncBounds = [
-          [-84.3219, 33.8423], // Southwest corner [minLon, minLat]
-          [-75.4606, 36.5880]  // Northeast corner [maxLon, maxLat]
+        // Correct Mapbox GL JS bounds for Virginia
+        var vaBounds = [
+          [-83.7, 36.5], // Southwest corner [minLon, minLat]
+          [-75.2, 39.5]  // Northeast corner [maxLon, maxLat]
         ];
         // Efficient direct centering/zooming without recursion
-        if (ncBounds && typeof ncBounds.getCenter === 'function' && typeof map.setCenter === 'function' && typeof map.setZoom === 'function') {
-          var center = ncBounds.getCenter();
+        if (vaBounds && typeof vaBounds.getCenter === 'function' && typeof map.setCenter === 'function' && typeof map.setZoom === 'function') {
+          var center = vaBounds.getCenter();
           map.setCenter([center.lng, center.lat]);
           map.setZoom(7);
-        } else if (ncBounds && typeof map.setView === 'function') {
-          var center = ncBounds.getCenter();
+        } else if (vaBounds && typeof map.setView === 'function') {
+          var center = vaBounds.getCenter();
           map.setView([center.lat, center.lng], 7);
         } else {
           map.flyTo({ center: CONFIG.center, zoom: CONFIG.zoom, offset: [0, 0] });
@@ -3077,7 +3082,7 @@ function filterValidContests(contests) {
       }, 300); // Wait 300ms before updating
     }
 
-   function updateMapColors() {
+   function updateMapColors(retryCount = 0) {
   if (!currentContest || !currentContest.data) {
     console.log('[updateMapColors] No contest data');
     return;
@@ -3086,8 +3091,12 @@ function filterValidContests(contests) {
   try {
     // Check if layer exists, if not try again in a moment
     if (!map.getLayer('county-fill')) {
+      if (retryCount >= 20) {
+        console.warn('County layer still unavailable after retries; aborting color update.');
+        return;
+      }
       console.warn('County layer not ready yet, retrying in 500ms...');
-      setTimeout(updateMapColors, 500);
+      setTimeout(() => updateMapColors(retryCount + 1), 500);
       return;
     }
 
@@ -3785,4 +3794,3 @@ if (topSearch) topSearch.parentNode.removeChild(topSearch);
     </script>
 </body>
 </html>
-
