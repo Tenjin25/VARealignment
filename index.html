@@ -1088,9 +1088,28 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatJurisdictionDisplayName(name) {
       const raw = (name || '').toString().trim();
       if (!raw) return 'Selected Jurisdiction';
-      const normalized = raw.replace(/ city$/i, ' City');
-      if (/\b(county|city)\b$/i.test(normalized)) return normalized;
-      return `${normalized} County`;
+      if (/^city of\s+/i.test(raw)) return raw;
+      const cityMatch = raw.match(/^(.*)\s+city$/i);
+      if (cityMatch) return `City of ${cityMatch[1].trim()}`;
+      const countyMatch = raw.match(/^(.*)\s+county$/i);
+      if (countyMatch) return `${countyMatch[1].trim()} County`;
+      return `${raw} County`;
+    }
+
+    function getFeatureJurisdictionName(props) {
+      if (!props) return '';
+      return (
+        props.namelsad ||
+        props.NAMELSAD20 ||
+        props.NAMELSAD ||
+        props.NAME20 ||
+        props.name ||
+        props.NAME ||
+        props.county_name ||
+        props.County ||
+        props.COUNTYNAME ||
+        ''
+      );
     }
 // Merge JSONs (e.g., boundaries + election results)
 function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County', countyNameKey='county') {
@@ -2178,7 +2197,7 @@ function toggleSidebar() {
         map.on('click', 'county-fill', (e) => {
           if (e.features && e.features[0] && e.features[0].properties) {
             const props = e.features[0].properties;
-            const countyName = props.NAMELSAD20 || props.NAME20 || props.county_name || props.County || props.COUNTYNAME || props.NAME || props.name;
+            const countyName = getFeatureJurisdictionName(props);
             if (countyName) {
               showCountyDetails(countyName);
               lastSelectedCounty = countyName;
@@ -3220,7 +3239,7 @@ function filterValidContests(contests) {
       if (!e.features.length) return;
       
       const county = e.features[0];
-  const countyName = county.properties.NAMELSAD20 || county.properties.NAME20 || county.properties.county_name || county.properties.name;
+  const countyName = getFeatureJurisdictionName(county.properties || {});
       
       if (countyName) {
         updateSidebar(countyName);
@@ -3617,7 +3636,7 @@ function setupCountySearch() {
     // Use NAMELSAD20 first (has full name like "St. Louis County") instead of NAME20 (just "St. Louis")
     counties = countiesSource._data.features.map(f => {
       const p = f.properties || {};
-      let name = p.NAMELSAD20 || p.NAME20 || p.county_name || p.County || p.COUNTYNAME || p.NAME || p.name || '';
+      let name = getFeatureJurisdictionName(p);
       // Normalize "St. Louis city" to "St. Louis City" for display
       name = name.replace(/ city$/i, ' City');
       return name;
@@ -3741,7 +3760,7 @@ function handleCountySelection(countyName) {
     src.features.forEach(f => {
       const props = f.properties || {};
       // Use NAMELSAD20 first (has full name like "St. Louis County") instead of NAME20 (just "St. Louis")
-      const rawName = props.NAMELSAD20 || props.NAME20 || props.county_name || props.County || props.COUNTYNAME || props.NAME || props.name || '';
+      const rawName = getFeatureJurisdictionName(props);
       const n = normalize(rawName);
       if (n === normTarget) {
         found = f;
@@ -3756,7 +3775,7 @@ function handleCountySelection(countyName) {
       src.features.forEach(f => {
         const props = f.properties || {};
         // Use NAMELSAD20 first (has full name like "St. Louis County") instead of NAME20 (just "St. Louis")
-        const rawName = props.NAMELSAD20 || props.NAME20 || props.county_name || props.County || props.COUNTYNAME || props.NAME || props.name || '';
+        const rawName = getFeatureJurisdictionName(props);
         const n = normalize(rawName);
         
         // Match if target + " COUNTY" equals the name, OR name without " COUNTY" equals target
@@ -3782,7 +3801,7 @@ function handleCountySelection(countyName) {
     if (found) {
       const props = found.properties || {};
       // Use NAMELSAD20 first (has full name like "St. Louis County") instead of NAME20 (just "St. Louis")
-      lastSelectedCounty = props.NAMELSAD20 || props.NAME20 || props.county_name || props.County || props.COUNTYNAME || props.NAME || props.name;
+      lastSelectedCounty = getFeatureJurisdictionName(props);
       // Normalize "St. Louis city" to "St. Louis City" for display
       lastSelectedCounty = lastSelectedCounty.replace(/ city$/i, ' City');
       const bbox = turf.bbox(found);
