@@ -23,6 +23,10 @@ This repository was recently updated with the following changes:
 3. Candidate name normalization updates
 - `Willard M. Romney` -> `Mitt Romney`
 - `W. T. Bolling`, `William T. Bolling`, and `William Bill T. Bolling` -> `Bill Bolling`
+- Presidential ticket shorthand normalized to lead candidate names:
+  - `Dole/ Kemp` -> `Bob Dole`
+  - `Clinton/ Gore` -> `Bill Clinton`
+  - `Bush/ Cheney` -> `George W. Bush`
 
 4. Sidebar competitiveness alignment in `index.html`
 - Sidebar rating label/color now uses the same `competitiveness` object used by map fill colors
