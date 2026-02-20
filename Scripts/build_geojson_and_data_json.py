@@ -22,23 +22,23 @@ JSON_PATH = DATA_DIR / 'va_county_aggregated_results.json'
 COMPETITIVENESS_SCALE = {
     'Republican': [
         {'category': 'Annihilation', 'range': 'R+40%+', 'color': '#67000d'},
-        {'category': 'Dominant', 'range': 'R+30-40%', 'color': '#a50f15'},
-        {'category': 'Stronghold', 'range': 'R+20-30%', 'color': '#cb181d'},
-        {'category': 'Safe', 'range': 'R+10-20%', 'color': '#ef3b2c'},
-        {'category': 'Likely', 'range': 'R+5.5-10%', 'color': '#fb6a4a'},
-        {'category': 'Lean', 'range': 'R+1-5.5%', 'color': '#fcae91'},
-        {'category': 'Tilt', 'range': 'R+0.5-1%', 'color': '#fee8c8'},
+        {'category': 'Dominant', 'range': 'R+30.00-39.99%', 'color': '#a50f15'},
+        {'category': 'Stronghold', 'range': 'R+20.00-29.99%', 'color': '#cb181d'},
+        {'category': 'Safe', 'range': 'R+10.00-19.99%', 'color': '#ef3b2c'},
+        {'category': 'Likely', 'range': 'R+5.50-9.99%', 'color': '#fb6a4a'},
+        {'category': 'Lean', 'range': 'R+1.00-5.49%', 'color': '#fcae91'},
+        {'category': 'Tilt', 'range': 'R+0.50-0.99%', 'color': '#fee8c8'},
     ],
     'Tossup': [
-        {'category': 'Tossup', 'range': '+/-0.5%', 'color': '#f7f7f7'},
+        {'category': 'Tossup', 'range': '<0.5%', 'color': '#f7f7f7'},
     ],
     'Democratic': [
-        {'category': 'Tilt', 'range': 'D+0.5-1%', 'color': '#e1f5fe'},
-        {'category': 'Lean', 'range': 'D+1-5.5%', 'color': '#c6dbef'},
-        {'category': 'Likely', 'range': 'D+5.5-10%', 'color': '#9ecae1'},
-        {'category': 'Safe', 'range': 'D+10-20%', 'color': '#6baed6'},
-        {'category': 'Stronghold', 'range': 'D+20-30%', 'color': '#3182bd'},
-        {'category': 'Dominant', 'range': 'D+30-40%', 'color': '#08519c'},
+        {'category': 'Tilt', 'range': 'D+0.50-0.99%', 'color': '#e1f5fe'},
+        {'category': 'Lean', 'range': 'D+1.00-5.49%', 'color': '#c6dbef'},
+        {'category': 'Likely', 'range': 'D+5.50-9.99%', 'color': '#9ecae1'},
+        {'category': 'Safe', 'range': 'D+10.00-19.99%', 'color': '#6baed6'},
+        {'category': 'Stronghold', 'range': 'D+20.00-29.99%', 'color': '#3182bd'},
+        {'category': 'Dominant', 'range': 'D+30.00-39.99%', 'color': '#08519c'},
         {'category': 'Annihilation', 'range': 'D+40%+', 'color': '#08306b'},
     ],
 }
@@ -267,18 +267,22 @@ def build_county_record(year: str, contest: str, county_label: str, fips: str, p
     two_party_total = dem_votes + rep_votes
     margin = abs(dem_votes - rep_votes)
 
+    # Keep competitiveness behavior the same (two-party signed margin),
+    # but compute margin_pct using total votes as requested.
     if two_party_total > 0:
         signed_margin_pct = ((dem_votes - rep_votes) / two_party_total) * 100.0
-        margin_pct = (margin / two_party_total) * 100.0
     else:
-        # Fallback when no DEM/REP present: compare top two overall candidates.
+        signed_margin_pct = 0.0
+
+    if total_votes > 0:
+        margin_pct = (margin / total_votes) * 100.0
+    else:
+        # Fallback when no votes are present: compare top two overall candidates.
         sorted_rows = sorted(party_rows, key=lambda x: x['votes'], reverse=True)
         top1 = sorted_rows[0]['votes'] if len(sorted_rows) > 0 else 0
         top2 = sorted_rows[1]['votes'] if len(sorted_rows) > 1 else 0
-        base = top1 + top2
         margin = abs(top1 - top2)
-        signed_margin_pct = 0.0
-        margin_pct = (margin / base * 100.0) if base else 0.0
+        margin_pct = 0.0
 
     if dem_votes > rep_votes:
         winner = 'DEM'

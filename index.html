@@ -3702,10 +3702,26 @@ function setupCountySearch() {
         dropdown.style.display = 'none';
         return;
       }
-      // Normalize and match county names - show up to 15 matches
+      // Rank matches so "hampton" prefers "City of Hampton" over "Southampton County".
+      function aliasScore(alias, query) {
+        if (alias === query) return 0;
+        if (alias.startsWith(query)) return 1;
+        if (alias.includes(` ${query}`)) return 2;
+        if (alias.includes(query)) return 3;
+        return 99;
+      }
       const matches = counties
-        .filter(county => county.aliases.some(a => a.includes(searchValue)))
-        .slice(0, 15);
+        .map(county => {
+          const best = Math.min(...county.aliases.map(a => aliasScore(a, searchValue)));
+          return { county, score: best };
+        })
+        .filter(item => item.score < 99)
+        .sort((a, b) => {
+          if (a.score !== b.score) return a.score - b.score;
+          return a.county.display.localeCompare(b.county.display);
+        })
+        .slice(0, 15)
+        .map(item => item.county);
       if (matches.length > 0) {
         dropdown.innerHTML = matches.map(county => `
           <div style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6;" 
