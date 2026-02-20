@@ -854,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const demPct = (demVotes / totalVotes) * 100;
           const repPct = (repVotes / totalVotes) * 100;
           const winner = repPct > demPct ? 'Republican' : (demPct > repPct ? 'Democratic' : 'Tie');
-          const marginPct = Math.abs(repPct - demPct/totalVotes) * 100;
+          const marginPct = Math.abs(repPct - demPct / totalVotes) * 100;
           // Use rounded margin for color assignment
           const roundedMargin = Math.round(marginPct * 100) / 100;
           const color = cbColorForMargin(roundedMargin, winner);
