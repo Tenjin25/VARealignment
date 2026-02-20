@@ -1876,26 +1876,7 @@ function toggleSidebar() {
       
       // Missouri structure: counties are directly in currentContest.data
       const countyResults = currentContest.data;
-      
-      // Find county data - try different name variations
-      // countyName from GeoJSON is "Boone County", "St. Louis city", etc.
-      // Election data has "Boone", "St. Louis City", "St. Louis County"
-      let countyData = null;
-      
-      // First try exact match (handles "St. Louis County")
-      countyData = countyResults[countyName];
-      
-      // If not found, try normalizing "city" to "City" (handles "St. Louis city" -> "St. Louis City")
-      if (!countyData) {
-        const normalized = countyName.replace(/ city$/i, ' City');
-        countyData = countyResults[normalized];
-      }
-      
-      // If not found, try stripping " County" suffix (handles "Boone County" -> "Boone")
-      if (!countyData && countyName.endsWith(' County')) {
-        const stripped = countyName.replace(/ County$/i, '');
-        countyData = countyResults[stripped];
-      }
+      let countyData = findCountyResult(countyResults, countyName);
       
       if (!countyData) {
         contentEl.innerHTML = '<p>No results found for this county in the selected contest.</p>';
@@ -3183,11 +3164,41 @@ function filterValidContests(contests) {
       updateStatewideResults(currentContest.contestType, currentContest.year, totalDemVotes, totalRepVotes, totalVotes);
     }
 
+    function findCountyResult(countyResults, countyName) {
+      if (!countyResults || !countyName || typeof countyName !== 'string') return null;
+
+      const candidates = [];
+      const base = countyName.trim();
+      const normalizedCity = base.replace(/ city$/i, ' City');
+      const strippedCounty = base.replace(/ County$/i, '');
+
+      candidates.push(base);
+      candidates.push(normalizedCity);
+      candidates.push(strippedCounty);
+      if (!/ county$/i.test(base) && !/ city$/i.test(base)) {
+        candidates.push(`${base} County`);
+      }
+      if (!/ city$/i.test(base)) {
+        candidates.push(`${base} City`);
+      }
+
+      for (const key of candidates) {
+        if (countyResults[key]) return countyResults[key];
+      }
+
+      // Case-insensitive fallback for mixed "city"/"City" or legacy key casing.
+      const targetSet = new Set(candidates.map(v => v.toUpperCase()));
+      for (const k of Object.keys(countyResults)) {
+        if (targetSet.has(String(k).toUpperCase())) return countyResults[k];
+      }
+      return null;
+    }
+
     function onCountyClick(e) {
       if (!e.features.length) return;
       
       const county = e.features[0];
-  const countyName = county.properties.NAME20 || county.properties.NAMELSAD20 || county.properties.county_name || county.properties.name;
+  const countyName = county.properties.NAMELSAD20 || county.properties.NAME20 || county.properties.county_name || county.properties.name;
       
       if (countyName) {
         updateSidebar(countyName);
@@ -3219,25 +3230,7 @@ function filterValidContests(contests) {
         return;
       }
       
-      // countyName from GeoJSON is "Boone County", "St. Louis city", etc.
-      // Election data has "Boone", "St. Louis City", "St. Louis County"
-      // Try multiple lookup variations
-      let result = null;
-      
-      // First try exact match (handles "St. Louis County")
-      result = currentContest.data[countyName];
-      
-      // If not found, try normalizing "city" to "City" (handles "St. Louis city" -> "St. Louis City")
-      if (!result) {
-        const normalized = countyName.replace(/ city$/i, ' City');
-        result = currentContest.data[normalized];
-      }
-      
-      // If not found, try stripping " County" suffix (handles "Boone County" -> "Boone")
-      if (!result && countyName.endsWith(' County')) {
-        const stripped = countyName.replace(/ County$/i, '');
-        result = currentContest.data[stripped];
-      }
+      let result = findCountyResult(currentContest.data, countyName);
       
       if (!result) {
         sidebarContent.innerHTML = '<p>No results found for this county in the selected contest.</p>';
