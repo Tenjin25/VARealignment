@@ -1993,9 +1993,13 @@ function toggleSidebar() {
       }
       let countyCompLabel = '';
       if (countyCompetitiveness?.category && countyCompetitiveness?.party) {
-        countyCompLabel = countyCompetitiveness.party === 'Tossup'
-          ? 'Tossup'
-          : `${countyCompetitiveness.category} ${countyCompetitiveness.party}`;
+        if (countyCompetitiveness.party === 'Tossup') {
+          countyCompLabel = winner === 'Democratic'
+            ? 'Tossup (Democratic Win)'
+            : (winner === 'Republican' ? 'Tossup (Republican Win)' : 'Tossup (Tie)');
+        } else {
+          countyCompLabel = `${countyCompetitiveness.category} ${countyCompetitiveness.party}`;
+        }
       } else {
         // Fallback if competitiveness is missing in data.
         countyCompLabel = winner === 'Republican' ? 'Unknown Republican' : (winner === 'Democratic' ? 'Unknown Democratic' : 'Unknown');
@@ -2095,6 +2099,11 @@ function toggleSidebar() {
   // Use the same competitiveness color/category source as map fill colors.
   let finalCompColor = countyCompetitiveness?.color || '#6b7280';
   let finalCompLabel = countyCompLabel;
+  if (countyCompetitiveness?.party === 'Tossup') {
+    finalCompColor = winner === 'Democratic'
+      ? '#2563eb'
+      : (winner === 'Republican' ? '#dc2626' : '#6b7280');
+  }
   
   sidebarContent += `<div class="competitiveness-section">`;
   sidebarContent += '<h3 class="sidebar-section-title">🎯 Competitiveness</h3>';
