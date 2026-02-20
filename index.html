@@ -3084,6 +3084,20 @@ function filterValidContests(contests) {
     // Create a color expression based on county names
     const colorExpression = ['case'];
     let matchCount = 0;
+    const countyNameExpr = [
+      'upcase',
+      [
+        'to-string',
+        [
+          'coalesce',
+          ['get', 'NAMELSAD20'],
+          ['get', 'namelsad'],
+          ['get', 'NAME20'],
+          ['get', 'name'],
+          ''
+        ]
+      ]
+    ];
 
   // Missouri structure: counties directly in currentContest.data
   Object.entries(currentContest.data).forEach(([countyName, result]) => {
@@ -3105,7 +3119,7 @@ function filterValidContests(contests) {
         // but GeoJSON has "St. Louis city" which uppercases to "ST. LOUIS CITY"
         
         colorExpression.push(
-          ['==', ['upcase', ['get', 'NAMELSAD20']], normalizedElectionCounty]
+          ['==', countyNameExpr, normalizedElectionCounty]
         );
         colorExpression.push(competitiveness.color);
         matchCount++;
