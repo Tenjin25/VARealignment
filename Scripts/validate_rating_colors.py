@@ -16,8 +16,8 @@ def to_scale_map(payload: dict) -> dict:
     return out
 
 
-def expected_competitiveness(dem_votes: int, rep_votes: int, two_party_total: int, scale_map: dict) -> dict:
-    signed_margin_pct = ((dem_votes - rep_votes) / two_party_total * 100.0) if two_party_total > 0 else 0.0
+def expected_competitiveness(dem_votes: int, rep_votes: int, total_votes: int, scale_map: dict) -> dict:
+    signed_margin_pct = ((dem_votes - rep_votes) / total_votes * 100.0) if total_votes > 0 else 0.0
     abs_margin = abs(signed_margin_pct)
 
     if abs_margin < 0.5:
@@ -73,8 +73,8 @@ def validate_or_fix(path: Path, fix: bool = False, max_print: int = 25) -> int:
                 total += 1
                 dem_votes = int(rec.get("dem_votes", 0) or 0)
                 rep_votes = int(rec.get("rep_votes", 0) or 0)
-                two_party_total = int(rec.get("two_party_total", 0) or 0)
-                expected = expected_competitiveness(dem_votes, rep_votes, two_party_total, scale_map)
+                total_votes = int(rec.get("total_votes", 0) or 0)
+                expected = expected_competitiveness(dem_votes, rep_votes, total_votes, scale_map)
                 actual = rec.get("competitiveness") or {}
 
                 diffs = []
