@@ -93,8 +93,10 @@ CANDIDATE_NAME_OVERRIDES = {
     'T. M. Kaine': 'Timothy M. Kaine',
     'W. B. Redpath': 'William B. Redpath',
     "W. R. O'Brien": "William R. O'Brien",
-    'W. T. Bolling': 'William T. Bolling',
-    'William Bill T. Bolling': 'William T. Bolling',
+    'W. T. Bolling': 'Bill Bolling',
+    'William Bill T. Bolling': 'Bill Bolling',
+    'William T. Bolling': 'Bill Bolling',
+    'Willard M. Romney': 'Mitt Romney',
 }
 
 
