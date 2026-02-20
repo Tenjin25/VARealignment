@@ -142,9 +142,17 @@ def party_code(party_name: str) -> str:
     return PARTY_CODE_MAP.get(p, p[:3] if p else 'OTH')
 
 
-def canonical_candidate_name(name: str) -> str:
+def canonical_candidate_name(name: str, year: str | None = None, contest: str | None = None) -> str:
     n = (name or '').strip()
-    return CANDIDATE_NAME_OVERRIDES.get(n, n)
+    n = CANDIDATE_NAME_OVERRIDES.get(n, n)
+
+    # Context-specific fixes for known presidential ticket data issues.
+    if contest == 'President' and year == '1992':
+        if n in {'George W. Bush', 'George W Bush', 'George Bush'}:
+            return 'George H. W. Bush'
+        if n in {'William Clinton', 'Bill Clinton'}:
+            return 'Bill Clinton'
+    return n
 
 
 def classify_office_type(contest: str) -> str:
@@ -373,7 +381,11 @@ def load_all_rows():
                         'county_raw': county,
                         'county_clean': county_clean,
                         'county_norm': norm,
-                        'candidate': canonical_candidate_name((row.get('candidate') or '').strip()),
+                        'candidate': canonical_candidate_name(
+                            (row.get('candidate') or '').strip(),
+                            year=year,
+                            contest=contest,
+                        ),
                         'party': (row.get('party') or '').strip(),
                         'party_code': party_code(row.get('party') or ''),
                         'votes': parse_votes(row.get('votes', '0')),
