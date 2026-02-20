@@ -1084,6 +1084,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return [];
       }
     }
+
+    function formatJurisdictionDisplayName(name) {
+      const raw = (name || '').toString().trim();
+      if (!raw) return 'Selected Jurisdiction';
+      const normalized = raw.replace(/ city$/i, ' City');
+      if (/\b(county|city)\b$/i.test(normalized)) return normalized;
+      return `${normalized} County`;
+    }
 // Merge JSONs (e.g., boundaries + election results)
 function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County', countyNameKey='county') {
   // Returns a new GeoJSON with election results merged into feature properties
@@ -1223,15 +1231,15 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
         return m[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
       }
 
-      // Explicit optgroup order for Missouri contests
+      // Explicit optgroup order for statewide Virginia contests
       const allowedOffices = [
         'US President',
         'US Senate',
-        'MO Governor',
-        'MO Lieutenant Governor',
-        'MO Attorney General',
-        'MO Secretary of State',
-        'MO Treasurer',
+        'Governor',
+        'Lieutenant Governor',
+        'Attorney General',
+        'Secretary of State',
+        'Treasurer',
         'Auditor'
       ];
       // Group contests by office label
@@ -1266,17 +1274,17 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
             'PRESIDENT': 'US President',
             'US SENATE': 'US Senate',
             'U.S. SENATE': 'US Senate',
-            'MO GOVERNOR': 'MO Governor',
-            'GOVERNOR': 'MO Governor',
-            'MO LIEUTENANT GOVERNOR': 'MO Lieutenant Governor',
-            'LIEUTENANT GOVERNOR': 'MO Lieutenant Governor',
-            'MO ATTORNEY GENERAL': 'MO Attorney General',
-            'ATTORNEY GENERAL': 'MO Attorney General',
-            'MO TREASURER': 'MO Treasurer',
-            'TREASURER': 'MO Treasurer',
-            'STATE TREASURER': 'MO Treasurer',
-            'MO SECRETARY OF STATE': 'MO Secretary of State',
-            'SECRETARY OF STATE': 'MO Secretary of State',
+            'MO GOVERNOR': 'Governor',
+            'GOVERNOR': 'Governor',
+            'MO LIEUTENANT GOVERNOR': 'Lieutenant Governor',
+            'LIEUTENANT GOVERNOR': 'Lieutenant Governor',
+            'MO ATTORNEY GENERAL': 'Attorney General',
+            'ATTORNEY GENERAL': 'Attorney General',
+            'MO TREASURER': 'Treasurer',
+            'TREASURER': 'Treasurer',
+            'STATE TREASURER': 'Treasurer',
+            'MO SECRETARY OF STATE': 'Secretary of State',
+            'SECRETARY OF STATE': 'Secretary of State',
             'STATE AUDITOR': 'Auditor',
             'AUDITOR': 'Auditor'
           };
@@ -1860,8 +1868,8 @@ function toggleSidebar() {
         const btn = document.getElementById('sidebar-minimize-btn');
         if (btn) btn.textContent = '−';
       }
-      // Normalize display name: "St. Louis city" -> "St. Louis City"
-      let displayName = countyName.replace(/ city$/i, ' City');
+      // Normalize and append type where missing, e.g. "Caroline" -> "Caroline County"
+      let displayName = formatJurisdictionDisplayName(countyName);
       
       const countyNameElement = document.getElementById('county-name');
       if (countyNameElement) countyNameElement.textContent = displayName;
@@ -3230,7 +3238,7 @@ function filterValidContests(contests) {
       const countyNameEl = document.getElementById('county-name');
       
       if (countyNameEl) {
-        countyNameEl.textContent = countyName;
+        countyNameEl.textContent = formatJurisdictionDisplayName(countyName);
       }
       
       if (!currentContest) {
