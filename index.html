@@ -2096,14 +2096,36 @@ function toggleSidebar() {
   }
   sidebarContent += `</div>`;
   
-  // Use the same competitiveness color/category source as map fill colors.
-  let finalCompColor = countyCompetitiveness?.color || '#6b7280';
-  let finalCompLabel = countyCompLabel;
-  if (countyCompetitiveness?.party === 'Tossup') {
-    finalCompColor = winner === 'Democratic'
-      ? '#2563eb'
-      : (winner === 'Republican' ? '#dc2626' : '#6b7280');
+  // Use legend colors for competitiveness text (match the map legend exactly).
+  function competitivenessColorFor(party, category) {
+    const scale = {
+      Republican: {
+        Annihilation: '#67000d',
+        Dominant: '#a50f15',
+        Stronghold: '#cb181d',
+        Safe: '#ef3b2c',
+        Likely: '#fb6a4a',
+        Lean: '#fcae91',
+        Tilt: '#fee8c8',
+      },
+      Democratic: {
+        Tilt: '#e1f5fe',
+        Lean: '#c6dbef',
+        Likely: '#9ecae1',
+        Safe: '#6baed6',
+        Stronghold: '#3182bd',
+        Dominant: '#08519c',
+        Annihilation: '#08306b',
+      },
+      Tossup: {
+        Tossup: '#f7f7f7',
+      },
+    };
+    return (scale[party] && scale[party][category]) ? scale[party][category] : '#6b7280';
   }
+
+  let finalCompColor = competitivenessColorFor(countyCompetitiveness?.party, countyCompetitiveness?.category);
+  let finalCompLabel = countyCompLabel;
   
   sidebarContent += `<div class="competitiveness-section">`;
   sidebarContent += '<h3 class="sidebar-section-title">🎯 Competitiveness</h3>';
@@ -2567,16 +2589,18 @@ function toggleSidebar() {
               else if (competitiveness.includes('Stronghold')) compColor = '#cb181d';
               else if (competitiveness.includes('Safe')) compColor = '#ef3b2c';
               else if (competitiveness.includes('Likely')) compColor = '#fb6a4a';
-              else if (competitiveness.includes('Lean')) compColor = '#f87171';
-              else if (competitiveness.includes('Tilt')) compColor = '#fca5a5';
+              else if (competitiveness.includes('Lean')) compColor = '#fcae91';
+              else if (competitiveness.includes('Tilt')) compColor = '#fee8c8';
             } else if (competitiveness.includes('Dem')) {
-              if (competitiveness.includes('Annihilation')) compColor = '#0c1d56';
+              if (competitiveness.includes('Annihilation')) compColor = '#08306b';
               else if (competitiveness.includes('Dominant')) compColor = '#08519c';
               else if (competitiveness.includes('Stronghold')) compColor = '#3182bd';
               else if (competitiveness.includes('Safe')) compColor = '#6baed6';
               else if (competitiveness.includes('Likely')) compColor = '#9ecae1';
               else if (competitiveness.includes('Lean')) compColor = '#c6dbef';
               else if (competitiveness.includes('Tilt')) compColor = '#e1f5fe';
+            } else if (competitiveness.includes('Tossup')) {
+              compColor = '#f7f7f7';
             }
             
             electionInfo = `
