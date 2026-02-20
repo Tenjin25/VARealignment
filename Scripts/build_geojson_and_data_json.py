@@ -97,6 +97,21 @@ CANDIDATE_NAME_OVERRIDES = {
     'William Bill T. Bolling': 'Bill Bolling',
     'William T. Bolling': 'Bill Bolling',
     'Willard M. Romney': 'Mitt Romney',
+    'Badnarik/ Campagna': 'Michael Badnarik',
+    'Browne/ Jorgensen': 'Harry Browne',
+    'Browne/ Olivier': 'Harry Browne',
+    'Buchanan/ Foster': 'Pat Buchanan',
+    'Bush/ Cheney': 'George W. Bush',
+    'Clinton/ Gore': 'Bill Clinton',
+    'Dole/ Kemp': 'Bob Dole',
+    'Dole/Kemp': 'Bob Dole',
+    'Gore/ Lieberman': 'Al Gore',
+    'Kerry/ Edwards': 'John Kerry',
+    'Nader/ La Duke': 'Ralph Nader',
+    'Perot/ Choate': 'Ross Perot',
+    'Peroutka/ Baldwin': 'Michael Peroutka',
+    'Phillips/ Frazier': 'Howard Phillips',
+    'Phillips/ Knight': 'Howard Phillips',
 }
 
 
