@@ -3633,20 +3633,38 @@ function setupCountySearch() {
   
   let counties = [];
   if (countiesSource._data && countiesSource._data.features) {
-    // Use NAMELSAD20 first (has full name like "St. Louis County") instead of NAME20 (just "St. Louis")
     counties = countiesSource._data.features.map(f => {
       const p = f.properties || {};
-      let name = getFeatureJurisdictionName(p);
-      // Normalize "St. Louis city" to "St. Louis City" for display
-      name = name.replace(/ city$/i, ' City');
-      return name;
+      const canonical = getFeatureJurisdictionName(p);
+      if (!canonical) return null;
+      let display = canonical;
+      const cityMatch = canonical.match(/^(.*)\s+city$/i);
+      if (cityMatch) {
+        display = `City of ${cityMatch[1].trim()}`;
+      } else {
+        display = canonical.replace(/ city$/i, ' City');
+      }
+      const base = canonical.replace(/\s+(county|city)$/i, '').trim();
+      const aliases = [
+        canonical.toLowerCase(),
+        display.toLowerCase(),
+        base.toLowerCase(),
+        `${base} county`.toLowerCase(),
+        `${base} city`.toLowerCase(),
+        `city of ${base}`.toLowerCase()
+      ];
+      return { canonical, display, aliases };
     }).filter(Boolean).sort((a, b) => {
-      // Custom sort: prioritize "St. Louis County" over "St. Louis City"
-      if (a === 'St. Louis County' && b === 'St. Louis City') return -1;
-      if (a === 'St. Louis City' && b === 'St. Louis County') return 1;
-      return a.localeCompare(b);
+      // Custom sort: prioritize county over city for same base name
+      const aBase = a.canonical.replace(/\s+(county|city)$/i, '').trim();
+      const bBase = b.canonical.replace(/\s+(county|city)$/i, '').trim();
+      if (aBase === bBase) {
+        if (/ county$/i.test(a.canonical) && / city$/i.test(b.canonical)) return -1;
+        if (/ city$/i.test(a.canonical) && / county$/i.test(b.canonical)) return 1;
+      }
+      return a.display.localeCompare(b.display);
     });
-    console.log('Available counties:', counties.filter(c => c.includes('St. Louis')));
+    console.log('Available counties:', counties.map(c => c.display).filter(c => c.includes('St. Louis')));
   }
   
   const searchInput = document.getElementById('county-search');
@@ -3685,13 +3703,15 @@ function setupCountySearch() {
         return;
       }
       // Normalize and match county names - show up to 15 matches
-      const matches = counties.filter(county => county.toLowerCase().includes(searchValue)).slice(0, 15);
+      const matches = counties
+        .filter(county => county.aliases.some(a => a.includes(searchValue)))
+        .slice(0, 15);
       if (matches.length > 0) {
         dropdown.innerHTML = matches.map(county => `
           <div style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6;" 
                onmouseover="this.style.backgroundColor='#f3f4f6'" 
                onmouseout="this.style.backgroundColor='white'"
-               onclick="selectCounty('${county.replace(/'/g, "\\'")}')">${county}</div>
+               onclick="selectCounty('${county.canonical.replace(/'/g, "\\'")}')">${county.display}</div>
         `).join('');
         dropdown.style.display = 'block';
       } else {
@@ -3726,7 +3746,7 @@ function selectCounty(countyName) {
   const dropdown = document.getElementById('county-dropdown');
   
   if (searchInput) {
-    searchInput.value = countyName;
+    searchInput.value = formatJurisdictionDisplayName(countyName);
     if (dropdown) dropdown.style.display = 'none';
     handleCountySelection(countyName);
   }
@@ -3754,7 +3774,10 @@ function handleCountySelection(countyName) {
         .toUpperCase()
         .replace(/\bCITY\b/i, 'CITY'); // Normalize "city" to "CITY"
     }
-    const normTarget = normalize(countyName);
+    const cleanedCountyName = (countyName || '').replace(/^city of\s+/i, '').trim();
+    const normTarget = normalize(cleanedCountyName);
+    const requestedCity = /^city of\s+/i.test(countyName) || /\scity$/i.test(countyName);
+    const requestedCounty = /\scounty$/i.test(countyName);
     let found = false;
     // First try exact match
     src.features.forEach(f => {
@@ -3794,8 +3817,14 @@ function handleCountySelection(countyName) {
         }
       });
       
-      // Prioritize county over city
-      found = countyMatch || cityMatch;
+      // Respect explicit user intent; otherwise default to county-first for ambiguous base names
+      if (requestedCity) {
+        found = cityMatch || countyMatch;
+      } else if (requestedCounty) {
+        found = countyMatch || cityMatch;
+      } else {
+        found = countyMatch || cityMatch;
+      }
     }
 
     if (found) {
