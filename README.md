@@ -27,6 +27,9 @@ This repository was recently updated with the following changes:
 4. Sidebar competitiveness alignment in `index.html`
 - Sidebar rating label/color now uses the same `competitiveness` object used by map fill colors
 - This removes mismatches where sidebar category/color could disagree with map coloring
+- Tossup display in the sidebar now uses winner-specific styling:
+  - `Tossup (Republican Win)` in red
+  - `Tossup (Democratic Win)` in blue
 
 5. New validation script
 - Added `Scripts/validate_rating_colors.py`
