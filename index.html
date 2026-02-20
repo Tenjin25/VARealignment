@@ -638,17 +638,6 @@ body {
   font-weight: 600 !important;
   margin-bottom: 2px !important;
 }
-.sidebar-competitiveness {
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  margin-bottom: 2px !important;
-}
-.sidebar-rating-block {
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 14px !important;
-  line-height: 1.4;
-}
 .statewide-results {
   margin-bottom: 20px;
   padding: 16px;
@@ -865,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const demPct = (demVotes / totalVotes) * 100;
           const repPct = (repVotes / totalVotes) * 100;
           const winner = repPct > demPct ? 'Republican' : (demPct > repPct ? 'Democratic' : 'Tie');
-          const marginPct = Math.abs(repPct - demPct / totalVotes) * 100;
+          const marginPct = Math.abs(repPct - demPct);
           // Use rounded margin for color assignment
           const roundedMargin = Math.round(marginPct * 100) / 100;
           const color = cbColorForMargin(roundedMargin, winner);
@@ -906,7 +895,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <label for="county-search" style="font-weight:600;">Search County:</label>
           <input type="text" id="county-search" placeholder="Type county name..." autocomplete="off" spellcheck="false" style="width:100%;padding:8px;border-radius:6px;margin-top:6px;margin-bottom:6px;border:1px solid #d1d5db;" />
         </div>
-        <h4 id="statewide">🏛️ Virginia Statewide</h4>
+        <h4 id="statewide">🏛️ Missouri Statewide</h4>
   <div style="margin:18px 0 8px 0; border-bottom:2px solid #e5e7eb;"></div>
    <div class="statewide-results" id="statewide-results">
   <h4 id="contest-name" style="margin:0 0 15px 0; font-size:16px; font-weight:700; color:#1f2937;"></h4>
@@ -2140,7 +2129,7 @@ function toggleSidebar() {
   
   sidebarContent += `<div class="competitiveness-section">`;
   sidebarContent += '<h3 class="sidebar-section-title">🎯 Competitiveness</h3>';
-  sidebarContent += `<p class="sidebar-competitiveness" style="color: ${finalCompColor};">${finalCompLabel}</p>`;
+  sidebarContent += `<p style="color: ${finalCompColor}; font-weight: bold;">${finalCompLabel}</p>`;
   // Add short, emphasized cues for very-close and extremely-close contests (matches CLEAN map UX)
   try {
     if (typeof countyCompLabel === 'string') {
@@ -3317,7 +3306,7 @@ function filterValidContests(contests) {
         </div>
         
         ${result.competitiveness ? `
-        <div class="sidebar-rating-block" style="background: ${result.competitiveness.color}20; border-left: 4px solid ${result.competitiveness.color};">
+        <div style="padding: 12px; border-radius: 6px; background: ${result.competitiveness.color}20; border-left: 4px solid ${result.competitiveness.color};">
           <strong>Rating:</strong> ${result.competitiveness.category} ${result.competitiveness.party}
         </div>
         ` : ''}
