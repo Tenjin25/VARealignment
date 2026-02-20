@@ -894,7 +894,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <label for="county-search" style="font-weight:600;">Search County:</label>
           <input type="text" id="county-search" placeholder="Type county name..." autocomplete="off" spellcheck="false" style="width:100%;padding:8px;border-radius:6px;margin-top:6px;margin-bottom:6px;border:1px solid #d1d5db;" />
         </div>
-        <h4 id="statewide">🏛️ Missouri Statewide</h4>
+        <h4 id="statewide">🏛️ Virginia Statewide</h4>
   <div style="margin:18px 0 8px 0; border-bottom:2px solid #e5e7eb;"></div>
    <div class="statewide-results" id="statewide-results">
   <h4 id="contest-name" style="margin:0 0 15px 0; font-size:16px; font-weight:700; color:#1f2937;"></h4>
@@ -1632,7 +1632,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
       let compLabel = '';
       let compColor = '#6b7280';
       if (marginPct >= 40) {
-        compLabel = winner === 'Republican' ? "Annihilation Republican (40%+)" : "Annihilation Democratic (40%+)";
+        compLabel = winner === 'Republican' ? "Annihilation Republican (≥40.00%)" : "Annihilation Democratic (≥40.00%)";
         compColor = winner === 'Republican' ? '#450a0a' : '#0c1d56';
       } else if (marginPct >= 30) {
         compLabel = winner === 'Republican' ? "Dominant Republican (30.00-39.99%)" : "Dominant Democratic (30.00-39.99%)";
@@ -1644,13 +1644,13 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
         compLabel = winner === 'Republican' ? "Safe Republican (10.00-19.99%)" : "Safe Democratic (10.00-19.99%)";
         compColor = winner === 'Republican' ? '#dc2626' : '#3b82f6';
       } else if (marginPct >= 5.5) {
-        compLabel = winner === 'Republican' ? "Likely Republican (5.50-9.99%)" : "Likely Democratic (5.51-9.99%)";
+        compLabel = winner === 'Republican' ? "Likely Republican (5.50-9.99%)" : "Likely Democratic (5.50-9.99%)";
         compColor = winner === 'Republican' ? '#ef4444' : '#60a5fa';
       } else if (marginPct >= 1) {
         compLabel = winner === 'Republican' ? "Lean Republican (1.00-5.49%)" : "Lean Democratic (1.00-5.49%)";
         compColor = winner === 'Republican' ? '#f87171' : '#93c5fd';
       } else if (marginPct >= 0.5) {
-        compLabel = winner === 'Republican' ? "Tilt Republican (0.50-0.99%)" : "Tilt Democratic (0.51-0.99%)";
+        compLabel = winner === 'Republican' ? "Tilt Republican (0.50-0.99%)" : "Tilt Democratic (0.50-0.99%)";
         compColor = winner === 'Republican' ? '#fca5a5' : '#bfdbfe';
       } else {
         compLabel = winner === 'Democratic' ? 'Tossup (Democratic Win) (<0.50%)' : 'Tossup (Republican Win) (<0.50%)';
