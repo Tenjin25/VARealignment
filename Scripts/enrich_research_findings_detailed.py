@@ -76,15 +76,27 @@ def safe_percentage(votes: float, total: float) -> float:
     return (votes / total) * 100.0
 
 
-def fmt_margin(value: float) -> str:
+def fmt_margin(value: float, use_box: bool = True) -> str:
     """Format margin with party prefix."""
     party = "D" if value >= 0 else "R"
+    if use_box:
+        box_class = "dem" if value >= 0 else "rep"
+        return f"<span class='data-box {box_class}'>{party}+{abs(value):.1f}%</span>"
     return f"{party}+{abs(value):.1f}%"
 
 
-def fmt_pct(value: float) -> str:
+def fmt_pct(value: float, use_box: bool = True, party: str = "neutral") -> str:
     """Format percentage."""
+    if use_box:
+        return f"<span class='data-box {party}'>{value:.1f}%</span>"
     return f"{value:.1f}%"
+
+
+def fmt_votes(value: int, use_box: bool = True) -> str:
+    """Format vote count with styling."""
+    if use_box:
+        return f"<span class='data-box votes'>{value:,}</span>"
+    return f"{value:,}"
 
 
 def contest_years(results_by_year: Dict, contest: str) -> List[str]:
@@ -175,11 +187,11 @@ def format_trend(trend: List[Dict], metric: str = 'margin') -> str:
     for t in trend:
         year = t['year']
         if metric == 'margin':
-            items.append(f"{year}: {fmt_margin(t['margin'])}")
+            items.append(f"{year}: {fmt_margin(t['margin'], use_box=True)}")
         elif metric == 'turnout':
-            items.append(f"{year}: {t['turnout']:,}")
+            items.append(f"{year}: {fmt_votes(t['turnout'], use_box=True)}")
         elif metric == 'dem_pct':
-            items.append(f"{year}: {fmt_pct(t['dem_pct'])}")
+            items.append(f"{year}: {fmt_pct(t['dem_pct'], use_box=True, party='dem')}")
     return " → ".join(items)
 
 
@@ -378,7 +390,7 @@ def build_regional_card_detailed(
             <p><strong>Recent Swing ({previous['year']} → {latest['year']}):</strong> {abs(swing_recent):.2f} pts toward {direction}</p>
             {f'<p><strong>Long-term Swing ({first["year"]} → {latest["year"]}):</strong> {abs(swing_total):.2f} pts toward {total_direction}</p>' if len(trend) > 2 else ''}
             <p><strong>Turnout Trend:</strong> {turnout_trend} ({'+' if turnout_change_pct > 0 else ''}{turnout_change_pct:.1f}% vs {previous['year']})</p>
-            <p><strong>Latest ({latest['year']}) Two-Party Split:</strong> DEM {fmt_pct(latest['dem_pct'])} | REP {fmt_pct(latest['rep_pct'])}</p>
+            <p><strong>Latest ({latest['year']}) Two-Party Split:</strong> DEM {fmt_pct(latest['dem_pct'], party='dem')} | REP {fmt_pct(latest['rep_pct'], party='rep')}</p>
           </div>'''
 
 
@@ -429,8 +441,8 @@ def build_realigned_county_cards_detailed(
             <p><strong>Margin Change:</strong> <span class="metric">{previous_year}: {fmt_margin(prev_margin)}</span> → <span class="metric">{latest_year}: {fmt_margin(curr_margin)}</span></p>
             <p><strong>Swing Direction:</strong> {abs(swing):.2f} pts toward {direction}</p>
             {trend_line}
-            <p><strong>{latest_year} Results:</strong> DEM {fmt_pct(latest['dem_pct'])} ({latest['dem_votes']:,}) | REP {fmt_pct(latest['rep_pct'])} ({latest['rep_votes']:,}) | Total {latest['turnout']:,}</p>
-            <p><strong>{previous_year} Results:</strong> DEM {fmt_pct(previous['dem_pct'])} ({previous['dem_votes']:,}) | REP {fmt_pct(previous['rep_pct'])} ({previous['rep_votes']:,}) | Total {previous['turnout']:,}</p>
+            <p><strong>{latest_year} Results:</strong> DEM {fmt_pct(latest['dem_pct'], party='dem')} ({fmt_votes(latest['dem_votes'])}) | REP {fmt_pct(latest['rep_pct'], party='rep')} ({fmt_votes(latest['rep_votes'])}) | Total {fmt_votes(latest['turnout'])}</p>
+            <p><strong>{previous_year} Results:</strong> DEM {fmt_pct(previous['dem_pct'], party='dem')} ({fmt_votes(previous['dem_votes'])}) | REP {fmt_pct(previous['rep_pct'], party='rep')} ({fmt_votes(previous['rep_votes'])}) | Total {fmt_votes(previous['turnout'])}</p>
             <p><strong>Turnout Change:</strong> {'+' if turnout_change_pct > 0 else ''}{turnout_change_pct:.1f}%</p>
             <p>{flip_text}</p>
           </div>'''
@@ -488,8 +500,8 @@ def build_selected_county_card_detailed(
             <p><strong>Margin Trend:</strong> {margin_trend}</p>
             <p><strong>Recent Swing ({previous['year']} → {latest['year']}):</strong> {abs(recent_swing):.2f} pts toward {recent_direction}</p>
             {f'<p><strong>Long-term Swing ({first["year"]} → {latest["year"]}):</strong> {abs(long_swing):.2f} pts toward {long_direction}</p>' if len(county_trend) > 2 else ''}
-            <p><strong>{latest['year']} Results:</strong> DEM {fmt_pct(latest['dem_pct'])} ({latest['dem_votes']:,}) | REP {fmt_pct(latest['rep_pct'])} ({latest['rep_votes']:,}) | Total {latest['turnout']:,}</p>
-            <p><strong>{previous['year']} Results:</strong> DEM {fmt_pct(previous['dem_pct'])} ({previous['dem_votes']:,}) | REP {fmt_pct(previous['rep_pct'])} ({previous['rep_votes']:,}) | Total {previous['turnout']:,}</p>
+            <p><strong>{latest['year']} Results:</strong> DEM {fmt_pct(latest['dem_pct'], party='dem')} ({fmt_votes(latest['dem_votes'])}) | REP {fmt_pct(latest['rep_pct'], party='rep')} ({fmt_votes(latest['rep_votes'])}) | Total {fmt_votes(latest['turnout'])}</p>
+            <p><strong>{previous['year']} Results:</strong> DEM {fmt_pct(previous['dem_pct'], party='dem')} ({fmt_votes(previous['dem_votes'])}) | REP {fmt_pct(previous['rep_pct'], party='rep')} ({fmt_votes(previous['rep_votes'])}) | Total {fmt_votes(previous['turnout'])}</p>
             <p><strong>Turnout Change:</strong> {'+' if turnout_change_pct > 0 else ''}{turnout_change_pct:.1f}%</p>
             <p>{flip_text}</p>
           </div>'''
@@ -571,7 +583,7 @@ def build_statewide_card_detailed(
             <p><strong>Recent Swing ({previous['year']} → {latest['year']}):</strong> {abs(swing_recent):.2f} pts toward {direction}</p>
             {f'<p><strong>Long-term Swing ({first["year"]} → {latest["year"]}):</strong> {abs(swing_total):.2f} pts toward {total_direction}</p>' if len(trend) > 2 else ''}
             <p><strong>Turnout Trend:</strong> {turnout_trend} ({'+' if turnout_change_pct > 0 else ''}{turnout_change_pct:.1f}% vs {previous['year']})</p>
-            <p><strong>Latest ({latest['year']}) Results:</strong> DEM {fmt_pct(latest['dem_pct'])} | REP {fmt_pct(latest['rep_pct'])} | Other {fmt_pct(latest['other_pct'])}</p>
+            <p><strong>Latest ({latest['year']}) Results:</strong> DEM {fmt_pct(latest['dem_pct'], party='dem')} | REP {fmt_pct(latest['rep_pct'], party='rep')} | Other {fmt_pct(latest['other_pct'], party='neutral')}</p>
             <p><strong>Top Turnout Counties ({latest['year']}):</strong></p>
             <p style='word-wrap:break-word;margin-left:20px;'>{turnout_line}</p>
             <p><strong>Largest County Swings ({previous['year']} → {latest['year']}):</strong></p>

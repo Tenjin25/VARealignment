@@ -722,6 +722,50 @@ body {
   border: 1px solid #dbeafe;
 }
 
+/* Clean data boxes with party colors */
+.data-box {
+  padding: 2px 10px;
+  border-radius: 2px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 0 3px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: 0.3px;
+  background: transparent;
+  border-left: 3px solid #6b7280;
+  border-right: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.data-box.dem {
+  background: #eff6ff;
+  color: #1e3a8a;
+  border-left: 3px solid #2563eb;
+  border-right: 1px solid #93c5fd;
+}
+
+.data-box.rep {
+  background: #fef2f2;
+  color: #991b1b;
+  border-left: 3px solid #dc2626;
+  border-right: 1px solid #fca5a5;
+}
+
+.data-box.neutral {
+  background: #f9fafb;
+  color: #4b5563;
+  border-left: 3px solid #6b7280;
+  border-right: 1px solid #d1d5db;
+}
+
+.data-box.votes {
+  background: #fafaf9;
+  color: #44403c;
+  border-left: 3px solid #78716c;
+  border-right: 1px solid #d6d3d1;
+  font-size: 0.95em;
+}
+
 /* Special metric styling for election results */
 .metric.result {
   background: #fee2e2;
@@ -903,7 +947,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div id="statewide-temperature-bar" style="width:100%;height:24px;margin:12px 0;display:none;"></div>
       </div>
     </div>
-                                                                <div class="findings-section">
+                                                                        <div class="findings-section">
           <h4>🔍 Detailed Research Findings - President (2012-2024)</h4>
           <div class="finding-card">
             <h5>📊 Analysis Overview</h5>
@@ -913,11 +957,11 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="finding-card">
             <h5>🏛️ Statewide Analysis - President</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>Comprehensive statewide trends showing Virginia's evolution across all counties, including voting patterns, turnout changes, and partisan realignment.</p>
-            <p><strong>Margin Trend:</strong> 2012: D+3.9% → 2016: D+5.7% → 2020: D+10.3% → 2024: D+5.9%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+3.9%</span> → 2016: <span class='data-box dem'>D+5.7%</span> → 2020: <span class='data-box dem'>D+10.3%</span> → 2024: <span class='data-box dem'>D+5.9%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 4.41 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 1.97 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: 3,858,043 → 2016: 3,984,631 → 2020: 4,460,524 → 2024: 4,505,941 (+1.0% vs 2020)</p>
-            <p><strong>Latest (2024) Results:</strong> DEM 53.0% | REP 47.0% | Other 2.1%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>3,858,043</span> → 2016: <span class='data-box votes'>3,984,631</span> → 2020: <span class='data-box votes'>4,460,524</span> → 2024: <span class='data-box votes'>4,505,941</span> (+1.0% vs 2020)</p>
+            <p><strong>Latest (2024) Results:</strong> DEM <span class='data-box dem'>53.0%</span> | REP <span class='data-box rep'>47.0%</span> | Other <span class='data-box neutral'>2.1%</span></p>
             <p><strong>Top Turnout Counties (2024):</strong></p>
             <p style='word-wrap:break-word;margin-left:20px;'>Fairfax County (589,427), Loudoun County (229,692), Virginia Beach city (228,771), Prince William County (228,712), Chesterfield County (210,628)</p>
             <p><strong>Largest County Swings (2020 → 2024):</strong></p>
@@ -929,118 +973,118 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="finding-card">
             <h5>🏙️ Northern Virginia</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>Virginia&#x27;s most populous region and DC&#x27;s Virginia suburbs, including Fairfax, Loudoun, Prince William, and Arlington. Like neighboring Maryland suburbs, NoVA&#x27;s politics are shaped by federal government employment, high education levels, and growing diversity. Once a Republican stronghold, it has become Virginia&#x27;s Democratic anchor.</p>
-            <p><strong>Margin Trend:</strong> 2012: D+21.3% → 2016: D+36.5% → 2020: D+40.5% → 2024: D+33.2%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+21.3%</span> → 2016: <span class='data-box dem'>D+36.5%</span> → 2020: <span class='data-box dem'>D+40.5%</span> → 2024: <span class='data-box dem'>D+33.2%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 7.34 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 11.85 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: 1,100,588 → 2016: 1,168,374 → 2020: 1,312,305 → 2024: 1,303,022 (-0.7% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 66.6% | REP 33.4%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>1,100,588</span> → 2016: <span class='data-box votes'>1,168,374</span> → 2020: <span class='data-box votes'>1,312,305</span> → 2024: <span class='data-box votes'>1,303,022</span> (-0.7% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>66.6%</span> | REP <span class='data-box rep'>33.4%</span></p>
           </div>
           <div class="finding-card">
             <h5>🏛️ Richmond Metro</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>The state capital region including Richmond city and suburbs like Henrico and Chesterfield. A competitive battleground where urban Democratic strength meets suburban swing counties.</p>
-            <p><strong>Margin Trend:</strong> 2012: D+8.3% → 2016: D+15.9% → 2020: D+22.1% → 2024: D+22.0%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+8.3%</span> → 2016: <span class='data-box dem'>D+15.9%</span> → 2020: <span class='data-box dem'>D+22.1%</span> → 2024: <span class='data-box dem'>D+22.0%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 0.07 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 13.69 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: 490,881 → 2016: 506,352 → 2020: 569,162 → 2024: 574,252 (+0.9% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 61.0% | REP 39.0%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>490,881</span> → 2016: <span class='data-box votes'>506,352</span> → 2020: <span class='data-box votes'>569,162</span> → 2024: <span class='data-box votes'>574,252</span> (+0.9% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>61.0%</span> | REP <span class='data-box rep'>39.0%</span></p>
           </div>
           <div class="finding-card">
             <h5>⚓ Hampton Roads</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>Virginia&#x27;s southeastern coastal region and military hub. Includes Norfolk, Virginia Beach, Chesapeake, and Newport News. Leans Democratic in urban cores with competitive suburbs.</p>
-            <p><strong>Margin Trend:</strong> 2012: D+18.4% → 2016: D+15.6% → 2020: D+21.3% → 2024: D+17.7%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+18.4%</span> → 2016: <span class='data-box dem'>D+15.6%</span> → 2020: <span class='data-box dem'>D+21.3%</span> → 2024: <span class='data-box dem'>D+17.7%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 3.57 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 0.70 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: 629,200 → 2016: 623,931 → 2020: 685,878 → 2024: 676,411 (-1.4% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 58.8% | REP 41.2%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>629,200</span> → 2016: <span class='data-box votes'>623,931</span> → 2020: <span class='data-box votes'>685,878</span> → 2024: <span class='data-box votes'>676,411</span> (-1.4% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>58.8%</span> | REP <span class='data-box rep'>41.2%</span></p>
           </div>
           <div class="finding-card">
             <h5>🎓 Central Virginia</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>College town region centered on Charlottesville and UVA. More Democratic than surrounding rural areas due to education sector influence and university populations.</p>
-            <p><strong>Margin Trend:</strong> 2012: D+5.7% → 2016: D+8.1% → 2020: D+12.9% → 2024: D+10.0%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+5.7%</span> → 2016: <span class='data-box dem'>D+8.1%</span> → 2020: <span class='data-box dem'>D+12.9%</span> → 2024: <span class='data-box dem'>D+10.0%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 2.90 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 4.25 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: 148,999 → 2016: 157,188 → 2020: 181,316 → 2024: 188,449 (+3.9% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 55.0% | REP 45.0%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>148,999</span> → 2016: <span class='data-box votes'>157,188</span> → 2020: <span class='data-box votes'>181,316</span> → 2024: <span class='data-box votes'>188,449</span> (+3.9% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>55.0%</span> | REP <span class='data-box rep'>45.0%</span></p>
           </div>
           <div class="finding-card">
             <h5>🏞️ Shenandoah Valley</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>The scenic valley corridor between the Blue Ridge and Allegheny mountains. Traditionally conservative region with agricultural communities and small towns.</p>
-            <p><strong>Margin Trend:</strong> 2012: R+24.5% → 2016: R+32.5% → 2020: R+27.6% → 2024: R+28.4%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+24.5%</span> → 2016: <span class='data-box rep'>R+32.5%</span> → 2020: <span class='data-box rep'>R+27.6%</span> → 2024: <span class='data-box rep'>R+28.4%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 0.84 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 3.86 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: 215,127 → 2016: 231,610 → 2020: 266,746 → 2024: 282,790 (+6.0% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 35.8% | REP 64.2%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>215,127</span> → 2016: <span class='data-box votes'>231,610</span> → 2020: <span class='data-box votes'>266,746</span> → 2024: <span class='data-box votes'>282,790</span> (+6.0% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>35.8%</span> | REP <span class='data-box rep'>64.2%</span></p>
           </div>
           <div class="finding-card">
             <h5>⛰️ Southwest Virginia</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>Appalachian Virginia&#x27;s coal and mountain country. Once Democratic union territory, now among Virginia&#x27;s most Republican regions, mirroring trends across Appalachia.</p>
-            <p><strong>Margin Trend:</strong> 2012: R+42.0% → 2016: R+59.7% → 2020: R+60.1% → 2024: R+62.0%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+42.0%</span> → 2016: <span class='data-box rep'>R+59.7%</span> → 2020: <span class='data-box rep'>R+60.1%</span> → 2024: <span class='data-box rep'>R+62.0%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 1.94 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 20.00 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: 150,076 → 2016: 151,394 → 2020: 166,275 → 2024: 167,296 (+0.6% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 19.0% | REP 81.0%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>150,076</span> → 2016: <span class='data-box votes'>151,394</span> → 2020: <span class='data-box votes'>166,275</span> → 2024: <span class='data-box votes'>167,296</span> (+0.6% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>19.0%</span> | REP <span class='data-box rep'>81.0%</span></p>
           </div>
           <div class="finding-card">
             <h5>🌾 Southside/Rural Virginia</h5>
             <p style='margin-bottom:12px;color:#4b5563;'>Rural counties south of Richmond with agricultural and manufacturing economies. Historically Democratic, now reliably Republican as rural realignment continues statewide.</p>
-            <p><strong>Margin Trend:</strong> 2012: R+12.8% → 2016: R+25.0% → 2020: R+25.8% → 2024: R+30.9%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+12.8%</span> → 2016: <span class='data-box rep'>R+25.0%</span> → 2020: <span class='data-box rep'>R+25.8%</span> → 2024: <span class='data-box rep'>R+30.9%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 5.10 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 18.05 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: 188,646 → 2016: 187,980 → 2020: 203,680 → 2024: 203,993 (+0.2% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM 34.6% | REP 65.4%</p>
+            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>188,646</span> → 2016: <span class='data-box votes'>187,980</span> → 2020: <span class='data-box votes'>203,680</span> → 2024: <span class='data-box votes'>203,993</span> (+0.2% vs 2020)</p>
+            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>34.6%</span> | REP <span class='data-box rep'>65.4%</span></p>
           </div>
           <div class="finding-card">
             <h5>📌 Chesterfield County - Detailed Analysis</h5>
             <p><strong>Region:</strong> Richmond Metro</p>
-            <p><strong>Margin Trend:</strong> 2012: R+7.9% → 2016: R+2.4% → 2020: D+6.8% → 2024: D+9.1%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+7.9%</span> → 2016: <span class='data-box rep'>R+2.4%</span> → 2020: <span class='data-box dem'>D+6.8%</span> → 2024: <span class='data-box dem'>D+9.1%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 2.31 pts toward Democratic</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 16.96 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM 54.6% (112,869) | REP 45.4% (94,030) | Total 210,628</p>
-            <p><strong>2020 Results:</strong> DEM 53.4% (106,935) | REP 46.6% (93,326) | Total 203,884</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>54.6%</span> (<span class='data-box votes'>112,869</span>) | REP <span class='data-box rep'>45.4%</span> (<span class='data-box votes'>94,030</span>) | Total <span class='data-box votes'>210,628</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>53.4%</span> (<span class='data-box votes'>106,935</span>) | REP <span class='data-box rep'>46.6%</span> (<span class='data-box votes'>93,326</span>) | Total <span class='data-box votes'>203,884</span></p>
             <p><strong>Turnout Change:</strong> +3.3%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>📌 Henry County - Detailed Analysis</h5>
             <p><strong>Region:</strong> Southside/Rural</p>
-            <p><strong>Margin Trend:</strong> 2012: R+15.1% → 2016: R+29.9% → 2020: R+29.4% → 2024: R+33.0%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+15.1%</span> → 2016: <span class='data-box rep'>R+29.9%</span> → 2020: <span class='data-box rep'>R+29.4%</span> → 2024: <span class='data-box rep'>R+33.0%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 3.64 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 17.94 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 33.5% (8,457) | REP 66.5% (16,800) | Total 25,474</p>
-            <p><strong>2020 Results:</strong> DEM 35.3% (9,127) | REP 64.7% (16,725) | Total 26,105</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>33.5%</span> (<span class='data-box votes'>8,457</span>) | REP <span class='data-box rep'>66.5%</span> (<span class='data-box votes'>16,800</span>) | Total <span class='data-box votes'>25,474</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>35.3%</span> (<span class='data-box votes'>9,127</span>) | REP <span class='data-box rep'>64.7%</span> (<span class='data-box votes'>16,725</span>) | Total <span class='data-box votes'>26,105</span></p>
             <p><strong>Turnout Change:</strong> -2.4%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>📌 Lee County - Detailed Analysis</h5>
             <p><strong>Region:</strong> Southwest Virginia</p>
-            <p><strong>Margin Trend:</strong> 2012: R+45.2% → 2016: R+64.5% → 2020: R+69.8% → 2024: R+72.4%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+45.2%</span> → 2016: <span class='data-box rep'>R+64.5%</span> → 2020: <span class='data-box rep'>R+69.8%</span> → 2024: <span class='data-box rep'>R+72.4%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 2.58 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 27.14 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 13.8% (1,391) | REP 86.2% (8,674) | Total 10,122</p>
-            <p><strong>2020 Results:</strong> DEM 15.1% (1,489) | REP 84.9% (8,365) | Total 9,946</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>13.8%</span> (<span class='data-box votes'>1,391</span>) | REP <span class='data-box rep'>86.2%</span> (<span class='data-box votes'>8,674</span>) | Total <span class='data-box votes'>10,122</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>15.1%</span> (<span class='data-box votes'>1,489</span>) | REP <span class='data-box rep'>84.9%</span> (<span class='data-box votes'>8,365</span>) | Total <span class='data-box votes'>9,946</span></p>
             <p><strong>Turnout Change:</strong> +1.8%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>📌 Chesapeake city - Detailed Analysis</h5>
             <p><strong>Region:</strong> Hampton Roads</p>
-            <p><strong>Margin Trend:</strong> 2012: D+1.1% → 2016: R+1.3% → 2020: D+6.6% → 2024: D+3.8%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+1.1%</span> → 2016: <span class='data-box rep'>R+1.3%</span> → 2020: <span class='data-box dem'>D+6.6%</span> → 2024: <span class='data-box dem'>D+3.8%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 2.73 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 2.79 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM 51.9% (65,399) | REP 48.1% (60,550) | Total 128,001</p>
-            <p><strong>2020 Results:</strong> DEM 53.3% (66,377) | REP 46.7% (58,180) | Total 127,108</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>51.9%</span> (<span class='data-box votes'>65,399</span>) | REP <span class='data-box rep'>48.1%</span> (<span class='data-box votes'>60,550</span>) | Total <span class='data-box votes'>128,001</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>53.3%</span> (<span class='data-box votes'>66,377</span>) | REP <span class='data-box rep'>46.7%</span> (<span class='data-box votes'>58,180</span>) | Total <span class='data-box votes'>127,108</span></p>
             <p><strong>Turnout Change:</strong> +0.7%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>📌 Virginia Beach city - Detailed Analysis</h5>
             <p><strong>Region:</strong> Hampton Roads</p>
-            <p><strong>Margin Trend:</strong> 2012: R+2.6% → 2016: R+3.8% → 2020: D+5.5% → 2024: D+2.7%</p>
+            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+2.6%</span> → 2016: <span class='data-box rep'>R+3.8%</span> → 2020: <span class='data-box dem'>D+5.5%</span> → 2024: <span class='data-box dem'>D+2.7%</span></p>
             <p><strong>Recent Swing (2020 → 2024):</strong> 2.85 pts toward Republican</p>
             <p><strong>Long-term Swing (2012 → 2024):</strong> 5.26 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM 51.3% (115,412) | REP 48.7% (109,375) | Total 228,771</p>
-            <p><strong>2020 Results:</strong> DEM 52.8% (117,393) | REP 47.2% (105,087) | Total 227,561</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>51.3%</span> (<span class='data-box votes'>115,412</span>) | REP <span class='data-box rep'>48.7%</span> (<span class='data-box votes'>109,375</span>) | Total <span class='data-box votes'>228,771</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>52.8%</span> (<span class='data-box votes'>117,393</span>) | REP <span class='data-box rep'>47.2%</span> (<span class='data-box votes'>105,087</span>) | Total <span class='data-box votes'>227,561</span></p>
             <p><strong>Turnout Change:</strong> +0.5%</p>
             <p>No party flip</p>
           </div>
@@ -1051,93 +1095,92 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="finding-card">
             <h5>Manassas Park city: 13.23-Point Realignment</h5>
             <p><strong>Region:</strong> Northern Virginia</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: D+33.7%</span> → <span class="metric">2024: D+20.5%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+33.7%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+20.5%</span></span></p>
             <p><strong>Swing Direction:</strong> 13.23 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 5.29 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 60.2% (3,506) | REP 39.8% (2,314) | Total 5,997</p>
-            <p><strong>2020 Results:</strong> DEM 66.9% (3,992) | REP 33.1% (1,979) | Total 6,087</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>60.2%</span> (<span class='data-box votes'>3,506</span>) | REP <span class='data-box rep'>39.8%</span> (<span class='data-box votes'>2,314</span>) | Total <span class='data-box votes'>5,997</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>66.9%</span> (<span class='data-box votes'>3,992</span>) | REP <span class='data-box rep'>33.1%</span> (<span class='data-box votes'>1,979</span>) | Total <span class='data-box votes'>6,087</span></p>
             <p><strong>Turnout Change:</strong> -1.5%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>Lynchburg city: 10.74-Point Realignment</h5>
             <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: D+2.7%</span> → <span class="metric">2024: R+8.0%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+2.7%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+8.0%</span></span></p>
             <p><strong>Swing Direction:</strong> 10.74 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 2.76 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM 46.0% (16,664) | REP 54.0% (19,574) | Total 37,023</p>
-            <p><strong>2020 Results:</strong> DEM 51.4% (18,048) | REP 48.6% (17,097) | Total 36,363</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>46.0%</span> (<span class='data-box votes'>16,664</span>) | REP <span class='data-box rep'>54.0%</span> (<span class='data-box votes'>19,574</span>) | Total <span class='data-box votes'>37,023</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>51.4%</span> (<span class='data-box votes'>18,048</span>) | REP <span class='data-box rep'>48.6%</span> (<span class='data-box votes'>17,097</span>) | Total <span class='data-box votes'>36,363</span></p>
             <p><strong>Turnout Change:</strong> +1.8%</p>
             <p><strong style='color: #d97706;'>Flip: Democratic → Republican</strong></p>
           </div>
           <div class="finding-card">
             <h5>Buckingham County: 10.34-Point Realignment</h5>
             <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: R+13.4%</span> → <span class="metric">2024: R+23.7%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box rep'>R+13.4%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+23.7%</span></span></p>
             <p><strong>Swing Direction:</strong> 10.34 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 26.20 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 38.1% (2,988) | REP 61.9% (4,847) | Total 7,925</p>
-            <p><strong>2020 Results:</strong> DEM 43.3% (3,471) | REP 56.7% (4,544) | Total 8,126</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>38.1%</span> (<span class='data-box votes'>2,988</span>) | REP <span class='data-box rep'>61.9%</span> (<span class='data-box votes'>4,847</span>) | Total <span class='data-box votes'>7,925</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>43.3%</span> (<span class='data-box votes'>3,471</span>) | REP <span class='data-box rep'>56.7%</span> (<span class='data-box votes'>4,544</span>) | Total <span class='data-box votes'>8,126</span></p>
             <p><strong>Turnout Change:</strong> -2.5%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>Manassas city: 9.55-Point Realignment</h5>
             <p><strong>Region:</strong> Northern Virginia</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: D+24.7%</span> → <span class="metric">2024: D+15.1%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+24.7%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+15.1%</span></span></p>
             <p><strong>Swing Direction:</strong> 9.55 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 1.64 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM 57.6% (9,048) | REP 42.4% (6,670) | Total 16,100</p>
-            <p><strong>2020 Results:</strong> DEM 62.3% (10,356) | REP 37.7% (6,256) | Total 16,968</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>57.6%</span> (<span class='data-box votes'>9,048</span>) | REP <span class='data-box rep'>42.4%</span> (<span class='data-box votes'>6,670</span>) | Total <span class='data-box votes'>16,100</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>62.3%</span> (<span class='data-box votes'>10,356</span>) | REP <span class='data-box rep'>37.7%</span> (<span class='data-box votes'>6,256</span>) | Total <span class='data-box votes'>16,968</span></p>
             <p><strong>Turnout Change:</strong> -5.1%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>Covington city: 9.28-Point Realignment</h5>
             <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: R+24.2%</span> → <span class="metric">2024: R+33.5%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box rep'>R+24.2%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+33.5%</span></span></p>
             <p><strong>Swing Direction:</strong> 9.28 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 48.49 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 33.3% (818) | REP 66.7% (1,642) | Total 2,480</p>
-            <p><strong>2020 Results:</strong> DEM 37.9% (964) | REP 62.1% (1,580) | Total 2,603</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>33.3%</span> (<span class='data-box votes'>818</span>) | REP <span class='data-box rep'>66.7%</span> (<span class='data-box votes'>1,642</span>) | Total <span class='data-box votes'>2,480</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>37.9%</span> (<span class='data-box votes'>964</span>) | REP <span class='data-box rep'>62.1%</span> (<span class='data-box votes'>1,580</span>) | Total <span class='data-box votes'>2,603</span></p>
             <p><strong>Turnout Change:</strong> -4.7%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>Surry County: 9.07-Point Realignment</h5>
             <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: D+8.4%</span> → <span class="metric">2024: R+0.7%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+8.4%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+0.7%</span></span></p>
             <p><strong>Swing Direction:</strong> 9.07 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 21.97 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 49.7% (2,176) | REP 50.3% (2,205) | Total 4,441</p>
-            <p><strong>2020 Results:</strong> DEM 54.2% (2,397) | REP 45.8% (2,025) | Total 4,471</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>49.7%</span> (<span class='data-box votes'>2,176</span>) | REP <span class='data-box rep'>50.3%</span> (<span class='data-box votes'>2,205</span>) | Total <span class='data-box votes'>4,441</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>54.2%</span> (<span class='data-box votes'>2,397</span>) | REP <span class='data-box rep'>45.8%</span> (<span class='data-box votes'>2,025</span>) | Total <span class='data-box votes'>4,471</span></p>
             <p><strong>Turnout Change:</strong> -0.7%</p>
             <p><strong style='color: #d97706;'>Flip: Democratic → Republican</strong></p>
           </div>
           <div class="finding-card">
             <h5>Prince William County: 9.02-Point Realignment</h5>
             <p><strong>Region:</strong> Northern Virginia</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: D+27.5%</span> → <span class="metric">2024: D+18.5%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+27.5%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+18.5%</span></span></p>
             <p><strong>Swing Direction:</strong> 9.02 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 2.25 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM 59.2% (131,128) | REP 40.8% (90,203) | Total 228,712</p>
-            <p><strong>2020 Results:</strong> DEM 63.8% (142,863) | REP 36.2% (81,222) | Total 228,056</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>59.2%</span> (<span class='data-box votes'>131,128</span>) | REP <span class='data-box rep'>40.8%</span> (<span class='data-box votes'>90,203</span>) | Total <span class='data-box votes'>228,712</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>63.8%</span> (<span class='data-box votes'>142,863</span>) | REP <span class='data-box rep'>36.2%</span> (<span class='data-box votes'>81,222</span>) | Total <span class='data-box votes'>228,056</span></p>
             <p><strong>Turnout Change:</strong> +0.3%</p>
             <p>No party flip</p>
           </div>
           <div class="finding-card">
             <h5>Charles City County: 8.82-Point Realignment</h5>
             <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: D+19.7%</span> → <span class="metric">2024: D+10.9%</span></p>
+            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+19.7%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+10.9%</span></span></p>
             <p><strong>Swing Direction:</strong> 8.82 pts toward Republican</p>
             <p><strong>Long-term Trend (2012 → 2024):</strong> 22.16 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM 55.4% (2,384) | REP 44.6% (1,917) | Total 4,353</p>
-            <p><strong>2020 Results:</strong> DEM 59.8% (2,624) | REP 40.2% (1,761) | Total 4,441</p>
+            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>55.4%</span> (<span class='data-box votes'>2,384</span>) | REP <span class='data-box rep'>44.6%</span> (<span class='data-box votes'>1,917</span>) | Total <span class='data-box votes'>4,353</span></p>
+            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>59.8%</span> (<span class='data-box votes'>2,624</span>) | REP <span class='data-box rep'>40.2%</span> (<span class='data-box votes'>1,761</span>) | Total <span class='data-box votes'>4,441</span></p>
             <p><strong>Turnout Change:</strong> -2.0%</p>
             <p>No party flip</p>
           </div>
         </div>
-      </div>
       <div class="sidebar-footer" style="padding: 16px 0; text-align: center; color: #888; font-size: 15px; border-top: 1px solid #e5e7eb; background: #f9fafb;">
         Created by Shamar Davis
       </div>
