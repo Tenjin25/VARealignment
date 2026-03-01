@@ -346,7 +346,8 @@ def build_regional_card_detailed(
     results_by_year: Dict,
     contest: str,
     years: List[str],
-    emoji: str = "📍"
+    emoji: str = "📍",
+    description: str = ""
 ) -> str:
     """Build a detailed regional analysis card with multi-year trends."""
     trend = multi_year_trend(results_by_year, contest, counties, years)
@@ -368,8 +369,11 @@ def build_regional_card_detailed(
     
     turnout_change_pct = ((latest['turnout'] - previous['turnout']) / previous['turnout'] * 100) if previous['turnout'] > 0 else 0
     
+    desc_paragraph = f"<p style='margin-bottom:12px;color:#4b5563;'>{html.escape(description)}</p>" if description else ""
+    
     return f'''          <div class="finding-card">
             <h5>{emoji} {html.escape(region_name)}</h5>
+            {desc_paragraph}
             <p><strong>Margin Trend:</strong> {margin_trend}</p>
             <p><strong>Recent Swing ({previous['year']} → {latest['year']}):</strong> {abs(swing_recent):.2f} pts toward {direction}</p>
             {f'<p><strong>Long-term Swing ({first["year"]} → {latest["year"]}):</strong> {abs(swing_total):.2f} pts toward {total_direction}</p>' if len(trend) > 2 else ''}
@@ -562,14 +566,18 @@ def build_statewide_card_detailed(
     
     return f'''          <div class="finding-card">
             <h5>🏛️ Statewide Analysis - {html.escape(contest)}</h5>
+            <p style='margin-bottom:12px;color:#4b5563;'>Comprehensive statewide trends showing Virginia's evolution across all counties, including voting patterns, turnout changes, and partisan realignment.</p>
             <p><strong>Margin Trend:</strong> {margin_trend}</p>
             <p><strong>Recent Swing ({previous['year']} → {latest['year']}):</strong> {abs(swing_recent):.2f} pts toward {direction}</p>
             {f'<p><strong>Long-term Swing ({first["year"]} → {latest["year"]}):</strong> {abs(swing_total):.2f} pts toward {total_direction}</p>' if len(trend) > 2 else ''}
             <p><strong>Turnout Trend:</strong> {turnout_trend} ({'+' if turnout_change_pct > 0 else ''}{turnout_change_pct:.1f}% vs {previous['year']})</p>
             <p><strong>Latest ({latest['year']}) Results:</strong> DEM {fmt_pct(latest['dem_pct'])} | REP {fmt_pct(latest['rep_pct'])} | Other {fmt_pct(latest['other_pct'])}</p>
-            <p><strong>Top Turnout Counties ({latest['year']}):</strong> {turnout_line}</p>
-            <p><strong>Largest County Swings ({previous['year']} → {latest['year']}):</strong> {swing_line}</p>
-            <p><strong>Top Turnout Gains ({previous['year']} → {latest['year']}):</strong> {turnout_gain_line}</p>
+            <p><strong>Top Turnout Counties ({latest['year']}):</strong></p>
+            <p style='word-wrap:break-word;margin-left:20px;'>{turnout_line}</p>
+            <p><strong>Largest County Swings ({previous['year']} → {latest['year']}):</strong></p>
+            <p style='word-wrap:break-word;margin-left:20px;'>{swing_line}</p>
+            <p><strong>Top Turnout Gains ({previous['year']} → {latest['year']}):</strong></p>
+            <p style='word-wrap:break-word;margin-left:20px;'>{turnout_gain_line}</p>
             <p><strong>County Flips:</strong> {flip_line}</p>
           </div>'''
 
@@ -592,31 +600,38 @@ def build_findings_html_detailed(
     
     # Build regional cards
     nova_card = build_regional_card_detailed(
-        "Northern Virginia", NOVA_COUNTIES, results_by_year, contest, years, "🏙️"
+        "Northern Virginia", NOVA_COUNTIES, results_by_year, contest, years, "🏙️",
+        "Virginia's most populous region, including Fairfax, Loudoun, Prince William, and Arlington. Once a Republican stronghold, NoVA has become Virginia's Democratic anchor, driven by diverse, highly-educated suburban voters."
     )
     
     richmond_card = build_regional_card_detailed(
-        "Richmond Metro", RICHMOND_METRO, results_by_year, contest, years, "🏛️"
+        "Richmond Metro", RICHMOND_METRO, results_by_year, contest, years, "🏛️",
+        "The state capital region including Richmond city and suburbs like Henrico and Chesterfield. A competitive battleground where urban Democratic strength meets suburban swing counties."
     )
     
     hampton_card = build_regional_card_detailed(
-        "Hampton Roads", HAMPTON_ROADS, results_by_year, contest, years, "⚓"
+        "Hampton Roads", HAMPTON_ROADS, results_by_year, contest, years, "⚓",
+        "Virginia's southeastern coastal region and military hub. Includes Norfolk, Virginia Beach, Chesapeake, and Newport News. Leans Democratic in urban cores with competitive suburbs."
     )
     
     sw_card = build_regional_card_detailed(
-        "Southwest Virginia", SOUTHWEST_VA, results_by_year, contest, years, "⛰️"
+        "Southwest Virginia", SOUTHWEST_VA, results_by_year, contest, years, "⛰️",
+        "Appalachian Virginia's coal and mountain country. Once Democratic union territory, now among Virginia's most Republican regions, mirroring trends across Appalachia."
     )
     
     southside_card = build_regional_card_detailed(
-        "Southside/Rural Virginia", SOUTHSIDE_RURAL, results_by_year, contest, years, "🌾"
+        "Southside/Rural Virginia", SOUTHSIDE_RURAL, results_by_year, contest, years, "🌾",
+        "Rural counties south of Richmond with agricultural and manufacturing economies. Historically Democratic, now reliably Republican as rural realignment continues statewide."
     )
     
     central_card = build_regional_card_detailed(
-        "Central Virginia", CENTRAL_VA, results_by_year, contest, years, "🎓"
+        "Central Virginia", CENTRAL_VA, results_by_year, contest, years, "🎓",
+        "College town region centered on Charlottesville and UVA. More Democratic than surrounding rural areas due to education sector influence and university populations."
     )
     
     valley_card = build_regional_card_detailed(
-        "Shenandoah Valley", SHENANDOAH_VALLEY, results_by_year, contest, years, "🏞️"
+        "Shenandoah Valley", SHENANDOAH_VALLEY, results_by_year, contest, years, "🏞️",
+        "The scenic valley corridor between the Blue Ridge and Allegheny mountains. Traditionally conservative region with agricultural communities and small towns."
     )
     
     # Build statewide card
