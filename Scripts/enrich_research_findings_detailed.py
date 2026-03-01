@@ -81,15 +81,15 @@ def fmt_margin(value: float, use_box: bool = True) -> str:
     party = "D" if value >= 0 else "R"
     if use_box:
         box_class = "dem" if value >= 0 else "rep"
-        return f"<span class='data-box {box_class}'>{party}+{abs(value):.1f}%</span>"
-    return f"{party}+{abs(value):.1f}%"
+        return f"<span class='data-box {box_class}'>{party}+{abs(value):.2f}%</span>"
+    return f"{party}+{abs(value):.2f}%"
 
 
 def fmt_pct(value: float, use_box: bool = True, party: str = "neutral") -> str:
     """Format percentage."""
     if use_box:
-        return f"<span class='data-box {party}'>{value:.1f}%</span>"
-    return f"{value:.1f}%"
+        return f"<span class='data-box {party}'>{value:.2f}%</span>"
+    return f"{value:.2f}%"
 
 
 def fmt_votes(value: int, use_box: bool = True) -> str:
