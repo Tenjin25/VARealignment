@@ -601,7 +601,7 @@ def build_findings_html_detailed(
     # Build regional cards
     nova_card = build_regional_card_detailed(
         "Northern Virginia", NOVA_COUNTIES, results_by_year, contest, years, "🏙️",
-        "Virginia's most populous region, including Fairfax, Loudoun, Prince William, and Arlington. Once a Republican stronghold, NoVA has become Virginia's Democratic anchor, driven by diverse, highly-educated suburban voters."
+        "Virginia's most populous region and DC's Virginia suburbs, including Fairfax, Loudoun, Prince William, and Arlington. Like neighboring Maryland suburbs, NoVA's politics are shaped by federal government employment, high education levels, and growing diversity. Once a Republican stronghold, it has become Virginia's Democratic anchor."
     )
     
     richmond_card = build_regional_card_detailed(
