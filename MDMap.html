@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- Missouri Electoral Realignments - Updated December 8, 2025 - v1.1 -->
+  <!-- Maryland Electoral Realignments -->
   <style>
   /* Mobile Responsive Styles */
   @media (max-width: 768px) {
@@ -137,6 +137,10 @@
       padding: 12px !important;
     }
 
+    .county-details h4 {
+      font-size: 16px !important;
+    }
+
     .county-details,
     .statewide-results,
     .finding-card {
@@ -145,11 +149,11 @@
     }
 
     .finding-card h5 {
-      font-size: 14px !important;
+      font-size: 13px !important;
     }
 
     .finding-card p {
-      font-size: 13px !important;
+      font-size: 12px !important;
     }
 
     /* Search input */
@@ -238,15 +242,15 @@
       if (typeof showCountyDetails === 'function') showCountyDetails(lastSelectedCounty);
   </script>
   <script>
-  // Tennessee contest/statewide logic (isolated)
+  // Maryland contest/statewide logic (isolated)
   function setupTNContestLogic() {
-    // For Tennessee, candidate names are already in the election data
+    // Candidate names are already in the election data
     function getCandidateName(year, office, party) {
-      // For Tennessee, candidate names are already provided in the election data
+      // Candidate names are already provided in the election data
       // This function is kept for compatibility but just returns the party name
       return party;
     }
-    // ...other TN contest/statewide logic can be moved here as needed...
+    // ...other contest/statewide logic can be moved here as needed...
   }
   // Call this only when contest logic is needed
   </script>
@@ -298,10 +302,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <meta charset='utf-8'>
-  <title>Virginia Political Realignment Map (1980-2025)</title>
+  <title> Maryland Political Realignment Map (1986-2024)</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'>
-  <meta property="og:title" content="Virginia Political Realignment Map (1980-2025)">
-  <meta property="og:description" content="Interactive visualization of Virginia's political trends from 1980 to 2025, showing county-level voting patterns.">
+  <meta property="og:title" content="Maryland Political Realignment Map (1986-2024)">
+  <meta property="og:description" content="Interactive visualization of Maryland's political trends from 1986 to 2024, showing county-level voting patterns.">
   <meta property="og:image" content="preview.png">
   <meta name="twitter:card" content="summary_large_image">
     <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet'>
@@ -722,62 +726,6 @@ body {
   border: 1px solid #dbeafe;
 }
 
-/* Clean data boxes with party colors - Maryland metric style */
-.data-box {
-  background: #eff6ff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-  color: #1d4ed8;
-  display: inline-block;
-  margin: 2px;
-  border: 1px solid #dbeafe;
-}
-
-.data-box.dem {
-  background: #dbeafe;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  padding: 3px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-  display: inline-block;
-  margin: 2px;
-}
-
-.data-box.rep {
-  background: #fee2e2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
-  padding: 3px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-  display: inline-block;
-  margin: 2px;
-}
-
-.data-box.neutral {
-  background: #f3f4f6;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
-  padding: 3px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-  display: inline-block;
-  margin: 2px;
-}
-
-.data-box.votes {
-  background: #fef3c7;
-  color: #78350f;
-  border: 1px solid #fde68a;
-  padding: 3px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-  display: inline-block;
-  margin: 2px;
-}
-
 /* Special metric styling for election results */
 .metric.result {
   background: #fee2e2;
@@ -790,6 +738,47 @@ body {
   background: #dbeafe;
   color: #1d4ed8;
   border: 1px solid #bfdbfe;
+}
+
+/* Finding card theme variants */
+.finding-card.finding-dem h5 {
+  border-bottom-color: #2563eb;
+  color: #1e40af;
+}
+.finding-card.finding-rep h5 {
+  border-bottom-color: #dc2626;
+  color: #991b1b;
+}
+.finding-card.finding-analysis h5 {
+  border-bottom-color: #7c3aed;
+  color: #5b21b6;
+}
+.metric.rep-metric {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 2px;
+}
+.metric.dem-metric {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 2px;
+}
+.finding-card .finding-subhead {
+  font-weight: 700;
+  color: #374151;
+  font-size: 13px;
+  margin: 10px 0 4px 0;
+  display: block;
 }
 
 /* End of styles */
@@ -832,20 +821,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Map original color to colorblind-friendly color
         var cbMap = {
           '#67000d': '#ff9900',
-          '#a50f15': '#ffb84d',
-          '#cb181d': '#ffd699',
-          '#ef3b2c': '#ffe5cc',
-          '#fb6a4a': '#fff2e6',
-          '#fcae91': '#ffe5cc',
-          '#fee8c8': '#fff2e6',
+          '#7f1d1d': '#ffb84d',
+          '#991b1b': '#ffd699',
+          '#dc2626': '#ffe5cc',
+          '#ef4444': '#fff2e6',
+          '#f87171': '#ffe5cc',
+          '#fca5a5': '#fff2e6',
           '#f7f7f7': '#cccccc',
-          '#e1f5fe': '#3399ff',
-          '#c6dbef': '#66b3ff',
-          '#9ecae1': '#99ccff',
-          '#6baed6': '#b3d1ff',
-          '#3182bd': '#3366cc',
-          '#08519c': '#003399',
-          '#08306b': '#001f4d'
+          '#bfdbfe': '#3399ff',
+          '#93c5fd': '#66b3ff',
+          '#60a5fa': '#99ccff',
+          '#3b82f6': '#b3d1ff',
+          '#1e40af': '#3366cc',
+          '#1e3a8a': '#003399',
+          '#0c1d56': '#001f4d'
         };
         var match = orig.match(/#([0-9a-fA-F]{6})/);
         if (match && cbMap[match[0]]) {
@@ -950,7 +939,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <label for="county-search" style="font-weight:600;">Search County:</label>
           <input type="text" id="county-search" placeholder="Type county name..." autocomplete="off" spellcheck="false" style="width:100%;padding:8px;border-radius:6px;margin-top:6px;margin-bottom:6px;border:1px solid #d1d5db;" />
         </div>
-        <h4 id="statewide">🏛️ Virginia Statewide</h4>
+        <h4 id="statewide">🏛️ Maryland Statewide</h4>
   <div style="margin:18px 0 8px 0; border-bottom:2px solid #e5e7eb;"></div>
    <div class="statewide-results" id="statewide-results">
   <h4 id="contest-name" style="margin:0 0 15px 0; font-size:16px; font-weight:700; color:#1f2937;"></h4>
@@ -959,239 +948,109 @@ document.addEventListener('DOMContentLoaded', function() {
         <div id="statewide-temperature-bar" style="width:100%;height:24px;margin:12px 0;display:none;"></div>
       </div>
     </div>
-                                                                        <div class="findings-section">
-          <h4>🔍 Detailed Research Findings - President (2012-2024)</h4>
-          <div class="finding-card">
-            <h5>📊 Analysis Overview</h5>
-            <p>This analysis examines <strong>4 election cycles</strong> from <strong>2012</strong> to <strong>2024</strong>, 
-            tracking margins, turnout trends, vote shares, and partisan realignment across Virginia's counties and regions.</p>
+        <div class="findings-section">
+          <h4>Research Findings</h4>
+
+          <!-- Finding 1: The Great Suburban Reversal -->
+          <div class="finding-card finding-dem">
+            <h5>The Great Suburban Reversal (1988–2024)</h5>
+            <p>Maryland's most consequential long-run electoral shift is the systematic conversion of formerly Republican suburban counties into Democratic strongholds. Four counties — each once a pillar of Republican statewide viability — tell the story most precisely in the presidential vote:</p>
+            <p><span class="finding-subhead">Howard County</span> <span class="metric rep-metric">R+12.92%</span> in 1988 → <span class="metric dem-metric">D+44.27%</span> in 2020 · <span class="metric dem-metric">D+41.31%</span> in 2024. Net swing: <span class="metric">57+ points</span>. The single largest county-level realignment in the dataset.</p>
+            <p><span class="finding-subhead">Frederick County</span> <span class="metric rep-metric">R+31.11%</span> in 1988 → <span class="metric dem-metric">D+9.61%</span> in 2020 · <span class="metric dem-metric">D+8.74%</span> in 2024. Flipped in the 2020 presidential race for the first time in modern Maryland history.</p>
+            <p><span class="finding-subhead">Anne Arundel County</span> <span class="metric rep-metric">R+27.79%</span> in 1988 → <span class="metric dem-metric">D+14.53%</span> in 2020 · <span class="metric dem-metric">D+13.82%</span> in 2024. Maryland's second-largest county by population, a Republican anchor for 30 years, now a Democratic one.</p>
+            <p><span class="finding-subhead">Baltimore County</span> <span class="metric rep-metric">R+14.73%</span> in 1988 → <span class="metric dem-metric">D+6.26%</span> narrowly in 2016, then an accelerated <span class="metric dem-metric">D+27.04%</span> in 2020 · <span class="metric dem-metric">D+24.31%</span> in 2024. The state's most populous county and for decades its most pivotal battleground.</p>
+            <p><strong>The Statewide Arc:</strong> In 1988 Maryland Democrats won the presidential vote by just <span class="metric dem-metric">48.34%</span> to <span class="metric rep-metric">50.97%</span> — Republicans actually carried the state. By 2020 that had inverted completely: <span class="metric dem-metric">65.81%</span> Democratic, <span class="metric rep-metric">31.72%</span> Republican. Maryland went from a genuine presidential battleground to a structural double-digit Democratic state in 32 years.</p>
+            <p><strong>The DC Transplant Engine:</strong> Washington D.C.'s federal economy is the gravity well at the center of this transformation. As inner-ring DC housing costs soared, waves of federal employees, defense contractors, consultants, and professional-class workers migrated outward into Maryland's suburban counties, bringing distinctly Democratic preferences into counties built around an older, more conservative voter coalition. Each decade the Democratic frontier moved one ring further out: first saturating Montgomery and Prince George's in the 1990s, then Howard and Charles in the 2000s, now completing the circuit through Frederick, Anne Arundel, and Baltimore County.</p>
+            <p><strong>Key Insight:</strong> The suburban reversal is not a random collection of county-level shifts — it is a single coherent demographic process radiating outward from Washington D.C., county by county, decade by decade, permanently and irreversibly closing the Republican statewide path that existed as recently as 1994.</p>
           </div>
-          <div class="finding-card">
-            <h5>🏛️ Statewide Analysis - President</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>Comprehensive statewide trends showing Virginia's evolution across all counties, including voting patterns, turnout changes, and partisan realignment.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+3.9%</span> → 2016: <span class='data-box dem'>D+5.7%</span> → 2020: <span class='data-box dem'>D+10.3%</span> → 2024: <span class='data-box dem'>D+5.9%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 4.41 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 1.97 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>3,858,043</span> → 2016: <span class='data-box votes'>3,984,631</span> → 2020: <span class='data-box votes'>4,460,524</span> → 2024: <span class='data-box votes'>4,505,941</span> (+1.0% vs 2020)</p>
-            <p><strong>Latest (2024) Results:</strong> DEM <span class='data-box dem'>53.0%</span> | REP <span class='data-box rep'>47.0%</span> | Other <span class='data-box neutral'>2.1%</span></p>
-            <p><strong>Top Turnout Counties (2024):</strong></p>
-            <p style='word-wrap:break-word;margin-left:20px;'>Fairfax County (589,427), Loudoun County (229,692), Virginia Beach city (228,771), Prince William County (228,712), Chesterfield County (210,628)</p>
-            <p><strong>Largest County Swings (2020 → 2024):</strong></p>
-            <p style='word-wrap:break-word;margin-left:20px;'>Manassas Park city (R+13.2), Lynchburg city (R+10.7), Buckingham County (R+10.3), Manassas city (R+9.6), Covington city (R+9.3)</p>
-            <p><strong>Top Turnout Gains (2020 → 2024):</strong></p>
-            <p style='word-wrap:break-word;margin-left:20px;'>Goochland County (+16.5%), New Kent County (+16.2%), Williamsburg city (+14.7%), Rockingham County (+11.5%), Louisa County (+10.2%)</p>
-            <p><strong>County Flips:</strong> Lynchburg city (D → R), Prince Edward County (D → R), Surry County (D → R)</p>
+
+          <!-- Finding 2: Howard County - Most Dramatic Realignment -->
+          <div class="finding-card finding-dem">
+            <h5>Howard County: Maryland's Most Dramatic Single-County Realignment</h5>
+            <p><strong>Presidential Scale of Change:</strong> No Maryland county has moved further in the presidential vote. Howard went from <span class="metric rep-metric">R+12.92%</span> (1988) — a solidly Republican suburb — to <span class="metric dem-metric">D+7.76%</span> (2000), to <span class="metric dem-metric">D+21.75%</span> (2016), to <span class="metric dem-metric">D+44.27%</span> (2020), and <span class="metric dem-metric">D+41.31%</span> (2024). The movement was not a sudden flip; it was a continuous, accelerating, unbroken leftward march across eight consecutive presidential cycles.</p>
+            <p><strong>Gubernatorial Arc — The Hogan Lag and the Moore Payoff:</strong> The gubernatorial trajectory shows both the candidate effect and the underlying structural trend. Howard gave Ehrlich <span class="metric rep-metric">R+11.21%</span> in 2002, then Hogan <span class="metric rep-metric">R+8.74%</span> in 2014, and even gave Hogan <span class="metric rep-metric">R+19.66%</span> in 2018 under weak Democratic nominee Ben Jealous — a result that made Howard look competitive in the governor's race even as it was careening Democratic presidentially. Then 2022 arrived. Wes Moore carried Howard by <span class="metric dem-metric">D+43.38%</span> — a 63-point swing from the Jealous era in a single gubernatorial cycle — exposing the 2018 result as pure candidate drag rather than any genuine Republican competitiveness in the county.</p>
+            <p><strong>What Built This:</strong> Howard County's realignment story begins with Columbia — the planned city developed from the 1960s onward by developer James Rouse with an explicit mission of racial integration, economic diversity, and progressive community design. Columbia embedded a different civic culture into Howard County's DNA from the start: racially mixed neighborhoods, village community associations, interfaith religious centers, and a deliberate professional-class residential environment that attracted exactly the kind of highly educated, socially progressive, and demographically diverse households who now define Howard County's electorate. As Columbia matured and outer-ring suburban development followed, Howard County drew ever-larger numbers of tech workers, federal contractors, and Baltimore-DC corridor commuters — each wave more Democratic than the last.</p>
+            <p><strong>Key Insight:</strong> Howard County is the sharpest microcosm of Maryland's realignment because it was never just drifting — it was structurally engineered from its founding to produce a different kind of suburban community. The political consequences of that founding vision took four decades to fully materialize in the data, but the trajectory was always present and always accelerating.</p>
           </div>
-          <div class="finding-card">
-            <h5>🏙️ Northern Virginia</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>Virginia&#x27;s most populous region and DC&#x27;s Virginia suburbs, including Fairfax, Loudoun, Prince William, and Arlington. Like neighboring Maryland suburbs, NoVA&#x27;s politics are shaped by federal government employment, high education levels, and growing diversity. Once a Republican stronghold, it has become Virginia&#x27;s Democratic anchor.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+21.3%</span> → 2016: <span class='data-box dem'>D+36.5%</span> → 2020: <span class='data-box dem'>D+40.5%</span> → 2024: <span class='data-box dem'>D+33.2%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 7.34 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 11.85 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>1,100,588</span> → 2016: <span class='data-box votes'>1,168,374</span> → 2020: <span class='data-box votes'>1,312,305</span> → 2024: <span class='data-box votes'>1,303,022</span> (-0.7% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>66.6%</span> | REP <span class='data-box rep'>33.4%</span></p>
+
+          <!-- Finding 3: Baltimore County — The Last Suburban Domino -->
+          <div class="finding-card finding-dem">
+            <h5>Baltimore County: The Last Suburban Domino to Fall</h5>
+            <p><strong>The Split-Ticket Era:</strong> Baltimore County spent nearly three decades as Maryland's most spectacular example of ticket-splitting — voting Democratic in presidential races while repeatedly backing Republicans in gubernatorial contests. It went Democratic for President in every cycle from 1992 onward, yet simultaneously delivered <span class="metric rep-metric">R+13.60%</span> for Sauerbrey in 1994, <span class="metric rep-metric">R+23.14%</span> for Ehrlich in 2002, <span class="metric rep-metric">R+24.65%</span> for Hogan in 2014, and <span class="metric rep-metric">R+27.84%</span> for Hogan in 2018. In 2018, Baltimore County gave Hogan a larger gubernatorial margin than it had given anyone since the pre-realignment era — even as it had been voting <span class="metric dem-metric">D+10.95%</span> for Obama presidentially just six years earlier.</p>
+            <p><strong>The 2022 Collapse of the Split:</strong> Wes Moore ended Baltimore County's split-ticket era in dramatic fashion: <span class="metric dem-metric">D+30.70%</span> gubernatorially in 2022, a 58-point swing from Hogan's 2018 margin in the same county in a single cycle. Baltimore County, which had been one of the key pillars of Hogan's two governorships, delivered Moore a larger margin than Montgomery County did in several previous gubernatorial races. The domino fell completely.</p>
+            <p><strong>What Drove the Split — And Why It Ended:</strong> Baltimore County's long split-ticket behavior reflected a particular kind of working-class and lower-middle-class white suburban voter who had socially and economically diverged from the business-class Republicans of Carroll and Harford, but hadn't yet fully embraced the Democratic Party identity of Montgomery and Howard. These voters were susceptible to popular crossover Republican candidates like Hogan who ran on local economic issues and distanced themselves from national conservative ideology. But once Hogan left the Republican Party apparatus nationally, the state GOP's alignment with Trump-era politics made that crossover appeal structurally impossible to reproduce. Dan Cox's 2022 candidacy was the final stress test; Baltimore County's response — a 58-point swing — confirmed the split was over and the county had completed its Democratic realignment.</p>
+            <p><strong>Key Insight:</strong> Baltimore County is proof that ticket-splitting suburban voters do not represent a durable third coalition — they are a transitional demographic in mid-realignment. When the candidate conditions that enabled the split disappeared, so did the split itself, revealing Baltimore County to be exactly what its presidential trajectory had predicted for decades: a deeply Democratic suburban county.</p>
           </div>
-          <div class="finding-card">
-            <h5>🏛️ Richmond Metro</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>The state capital region including Richmond city and suburbs like Henrico and Chesterfield. A competitive battleground where urban Democratic strength meets suburban swing counties.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+8.3%</span> → 2016: <span class='data-box dem'>D+15.9%</span> → 2020: <span class='data-box dem'>D+22.1%</span> → 2024: <span class='data-box dem'>D+22.0%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 0.07 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 13.69 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>490,881</span> → 2016: <span class='data-box votes'>506,352</span> → 2020: <span class='data-box votes'>569,162</span> → 2024: <span class='data-box votes'>574,252</span> (+0.9% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>61.0%</span> | REP <span class='data-box rep'>39.0%</span></p>
+
+          <!-- Finding 4: Charles County - Southern Maryland Transformation -->
+          <div class="finding-card finding-dem">
+            <h5>Charles County: Fastest Total Reversal in Southern Maryland</h5>
+            <p><strong>Scale of Change:</strong> No county in the dataset reversed more completely. Charles County went from <span class="metric rep-metric">R+27.48%</span> for President in 1988 to a near-toss-up <span class="metric dem-metric">D+0.24%</span> in 2000, then accelerated sharply to <span class="metric dem-metric">D+26.11%</span> in 2012, <span class="metric dem-metric">D+40.90%</span> in 2020, and <span class="metric dem-metric">D+40.50%</span> in 2024 — a total net swing of roughly <span class="metric">68 points</span>, the deepest full reversal in the Maryland dataset. Gubernatorially it told the same story on a lag: <span class="metric rep-metric">R+12.94%</span> in 2002, a razor-thin <span class="metric dem-metric">D+2.52%</span> in 2014, then <span class="metric dem-metric">D+39.51%</span> for Moore in 2022. Angela Alsobrooks also carried Charles by <span class="metric dem-metric">D+28.27%</span> in the 2024 Senate race.</p>
+            <p><strong>The DC Pricing-Out Effect:</strong> Charles County's transformation is the most direct case study in how DC housing economics reshape Maryland political geography. The mechanism is sequential and specific: as inner-DC housing became unaffordable in the 1980s and 1990s, Black professional families first moved into Prince George's County. As PG County itself matured and housing costs rose through the 1990s and 2000s, the next wave of buyers — working and middle-class Black households seeking affordable homeownership — was priced out southward into Charles County's expanding Waldorf, La Plata, and surrounding communities. These buyers did not simply bring their belongings; they brought their political environment. They came from precincts that had voted Democratic for 30 years, they held federal jobs or worked in DC-adjacent industries, and they arrived with deep, structurally reinforced Democratic voting habits. The transition from a Republican exurb to a Democratic one did not require decades of slow persuasion — it happened fast, neighborhood by neighborhood, school district by school district, through the mechanics of residential migration.</p>
+            <p><strong>Key Insight:</strong> Charles County is the most empirically clear proof that DC's political influence does not stop at the Beltway or even at the PG County line — it propagates outward through housing markets, one generation and one zip code at a time, converting historically conservative rural and exurban communities into reliable Democratic jurisdictions.</p>
           </div>
-          <div class="finding-card">
-            <h5>⚓ Hampton Roads</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>Virginia&#x27;s southeastern coastal region and military hub. Includes Norfolk, Virginia Beach, Chesapeake, and Newport News. Leans Democratic in urban cores with competitive suburbs.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+18.4%</span> → 2016: <span class='data-box dem'>D+15.6%</span> → 2020: <span class='data-box dem'>D+21.3%</span> → 2024: <span class='data-box dem'>D+17.7%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 3.57 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 0.70 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>629,200</span> → 2016: <span class='data-box votes'>623,931</span> → 2020: <span class='data-box votes'>685,878</span> → 2024: <span class='data-box votes'>676,411</span> (-1.4% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>58.8%</span> | REP <span class='data-box rep'>41.2%</span></p>
+
+          <!-- Finding 5: Montgomery County - From Battleground to Fortress -->
+          <div class="finding-card finding-dem">
+            <h5>Montgomery County: From Near-Tossup to Democratic Fortress</h5>
+            <p><strong>The Long-Run Presidential Arc:</strong> In 1988 Montgomery County was a genuine swing county — Democrats won it by only <span class="metric dem-metric">D+3.43%</span>, with 51.48% of the vote. By 1996 it had moved to <span class="metric dem-metric">D+24.21%</span>, by 2012 to <span class="metric dem-metric">D+38.96%</span>, peaking at <span class="metric dem-metric">D+59.64%</span> in 2020. Even in 2024, with a less energizing Democratic nominee, it held at <span class="metric dem-metric">D+52.76%</span>. In the 2024 Senate race, Angela Alsobrooks carried it by <span class="metric dem-metric">D+33.08%</span> against former Governor Hogan — a Montgomery County native running for his third statewide office.</p>
+            <p><strong>Why Montgomery Transformed:</strong> Montgomery County is ground zero for DC's professional transplant phenomenon. The county hosts the National Institutes of Health in Bethesda, the Food and Drug Administration in Silver Spring, and dozens of federal agencies, think tanks, and international organizations including the World Bank and IMF. These institutions drew a uniquely concentrated mass of highly educated, internationally connected, and ideologically liberal residents — scientists, physicians, economists, diplomats, and policy professionals — over decades. Simultaneously Montgomery became home to one of the largest and most diverse immigrant populations in the Mid-Atlantic, with major communities from Central America, sub-Saharan Africa, South Asia, and East Asia fundamentally remaking the county's demographic profile away from the older white suburban electorate that made it competitive in 1988. The two forces compounded each other: the professional federal workforce set a high-education, socially liberal baseline, and the immigrant population added dense, reliably Democratic new voters in every subsequent election cycle.</p>
+            <p><strong>The 2018 Dip — And the Rebound:</strong> Even under the difficult Ben Jealous candidacy in 2018, Montgomery returned <span class="metric dem-metric">D+5.39%</span> gubernatorially — its lowest margin in decades, but still Democratic. Two years later, presidentially, it gave Biden <span class="metric dem-metric">D+59.64%</span>. In 2022 it gave Moore <span class="metric dem-metric">D+59.58%</span>. The 2018 result was not evidence of structural weakness — it was evidence that Montgomery's Democratic dominance is candidate-sensitive at the margins but structurally unshakeable at the core.</p>
+            <p><strong>Key Insight:</strong> Montgomery County has been so thoroughly remade by DC's economic gravity that the Republican Party has essentially no structural constituency left there. The 1988 near-tossup result belongs to a different county — one that no longer exists demographically, professionally, or politically.</p>
           </div>
-          <div class="finding-card">
-            <h5>🎓 Central Virginia</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>College town region centered on Charlottesville and UVA. More Democratic than surrounding rural areas due to education sector influence and university populations.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+5.7%</span> → 2016: <span class='data-box dem'>D+8.1%</span> → 2020: <span class='data-box dem'>D+12.9%</span> → 2024: <span class='data-box dem'>D+10.0%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 2.90 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 4.25 pts toward Democratic</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>148,999</span> → 2016: <span class='data-box votes'>157,188</span> → 2020: <span class='data-box votes'>181,316</span> → 2024: <span class='data-box votes'>188,449</span> (+3.9% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>55.0%</span> | REP <span class='data-box rep'>45.0%</span></p>
+
+          <!-- Finding 6: Prince George's County -->
+          <div class="finding-card finding-dem">
+            <h5>Prince George's County: America's Wealthiest Majority-Black County and the Engine of Maryland's Democratic Coalition</h5>
+            <p><strong>A Unique National Profile:</strong> Prince George's County is one of the wealthiest majority-Black counties in the United States, with homeownership rates, median incomes, and educational attainment levels that set it apart from virtually any other majority-Black jurisdiction in American history. This wealth was not accidental — it was built deliberately over generations by Black federal workers, military families, and government professionals who migrated out of Washington D.C. beginning in the 1950s, drawn by the GI Bill, suburban homeownership, and the economic security of federal careers. Communities like Bowie, Greenbelt, Laurel, and College Park became anchors of a Black middle and upper-middle class that accumulated equity, educational credentials, and political organization across decades. By the early 2000s PG County had produced a Black professional political infrastructure — elected officials, civic networks, HBCUs, churches, and a deeply organized Democratic Party apparatus — with no parallel anywhere in American suburban history.</p>
+            <p><strong>The Electoral Foundation:</strong> That wealth and organization translated directly into the most reliable Democratic vote machine in Maryland. PG County has voted Democratic for Governor by at least <span class="metric dem-metric">D+36.74%</span> every cycle since 1994, reaching <span class="metric dem-metric">D+80.91%</span> in 2022. Presidentially it delivered <span class="metric dem-metric">D+80.53%</span> in 2020 and <span class="metric dem-metric">D+74.76%</span> in 2024. To put those numbers in context: 89.26% of PG County voted for Biden in 2020. These are not merely partisan margins — they represent the densest, most organizationally sophisticated Democratic vote production operation in any suburban jurisdiction in the country.</p>
+            <p><strong>The 2014 Warning Sign — Brown Loses Despite PG:</strong> In 2014, Lieutenant Governor Anthony G. Brown — a Black candidate from PG County, Maryland's Lieutenant Governor, running in a mid-term year — won PG by <span class="metric dem-metric">D+67.47%</span> and still lost the governorship statewide to Larry Hogan. That result was analytically critical: PG's margins were enormous, but the suburban counties that had not yet completed their Democratic realignment — Howard, Anne Arundel, Frederick, Baltimore County — gave Hogan enough room to win statewide. Brown's defeat proved that PG County alone, however dominant its margins, could not substitute for a completed suburban realignment. The realignment required both pillars: PG's irreplaceable organizational base load, and the suburban conversion that hadn't yet fully arrived.</p>
+            <p><strong>The Rise of Wes Moore — When the Two Pillars Combined:</strong> In 2022, Wes Moore ran with both pillars in place. PG County delivered its highest gubernatorial margin on record: <span class="metric dem-metric">D+80.91%</span>. And this time the suburbs held: Anne Arundel <span class="metric dem-metric">D+18.57%</span>, Baltimore County <span class="metric dem-metric">D+30.70%</span>, Howard <span class="metric dem-metric">D+43.38%</span>, Frederick <span class="metric dem-metric">D+10.27%</span>. Moore won statewide <span class="metric dem-metric">64.53%</span> to <span class="metric rep-metric">32.12%</span>. He became Maryland's first Black governor and only the third Black governor elected in American history. His path ran directly through the political infrastructure PG County had been building for 60 years, amplified at the decisive moment by the suburban realignment that Brown had narrowly lacked in 2014.</p>
+            <p><strong>Angela Alsobrooks — PG County's Infrastructure Goes to Washington:</strong> Angela Alsobrooks served as Prince George's County Executive from 2018 to 2024 — the first woman elected to that office. Her Senate run in 2024 against former Governor Larry Hogan was widely regarded as the hardest test Maryland Democrats could face: Hogan was the best-known, best-liked, most crossover-capable Republican in the state, running for a Senate seat in a year when Maryland Democrats faced national headwinds. The result: Alsobrooks won statewide <span class="metric dem-metric">54.64%</span> to <span class="metric rep-metric">42.84%</span>. PG County delivered <span class="metric dem-metric">D+66.67%</span> with <span class="metric dem-metric">82.7%</span> of the vote. Even with Hogan winning Anne Arundel by <span class="metric rep-metric">R+8.72%</span> and Frederick by <span class="metric rep-metric">R+11.30%</span> — genuine Republican crossover performance — the structural Democratic math built from PG County outward was insurmountable. Alsobrooks became Maryland's first Black U.S. Senator and its first female U.S. Senator simultaneously.</p>
+            <p><strong>Key Insight:</strong> Prince George's County is not merely a Democratic county — it is the organizational foundation, candidate incubator, and structural floor of Maryland's entire modern Democratic majority. The county produced both Governor Wes Moore and Senator Angela Alsobrooks within three years of each other, both of them historic firsts, neither achievable without the decades of institution-building PG County had done. PG County is the engine; the suburbs are the transmission. Both are required. And both are now fully operational.</p>
           </div>
-          <div class="finding-card">
-            <h5>🏞️ Shenandoah Valley</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>The scenic valley corridor between the Blue Ridge and Allegheny mountains. Traditionally conservative region with agricultural communities and small towns.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+24.5%</span> → 2016: <span class='data-box rep'>R+32.5%</span> → 2020: <span class='data-box rep'>R+27.6%</span> → 2024: <span class='data-box rep'>R+28.4%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 0.84 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 3.86 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>215,127</span> → 2016: <span class='data-box votes'>231,610</span> → 2020: <span class='data-box votes'>266,746</span> → 2024: <span class='data-box votes'>282,790</span> (+6.0% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>35.8%</span> | REP <span class='data-box rep'>64.2%</span></p>
+
+          <!-- Finding 7: Western Maryland and the Republican Consolidation Belt -->
+          <div class="finding-card finding-rep">
+            <h5>Western Maryland, the Rural Belt, and the Republican Consolidation That Couldn't Scale</h5>
+            <p><strong>Garrett County — The Dataset's Most Extreme County:</strong> Garrett County holds two records in this dataset. It delivered the highest Republican presidential margin: <span class="metric rep-metric">R+66.66%</span> in 2016, with 81.03% of the vote going to Trump. And it delivered the single highest margin of any county in any race across the entire dataset: <span class="metric rep-metric">R+78.53%</span> in the 2018 gubernatorial, when it gave Larry Hogan 88.57% against Ben Jealous. By 2024 Garrett still gave Trump <span class="metric rep-metric">R+53.84%</span> and Hogan (running as Republican Senate candidate) <span class="metric rep-metric">R+61.56%</span>. There is no ambiguity about Garrett County's political identity — it is among the most Republican counties east of the Mississippi.</p>
+            <p><strong>Carroll County — The Most Dramatic Republican Consolidation Story:</strong> Carroll County provides the sharpest illustration of how deep the pre-realignment partisan fluidity was, and how completely it has been replaced. In 1986, Carroll County gave Governor Schaefer a landslide <span class="metric dem-metric">D+58.49%</span>. That is not a misprint. Carroll County — today one of the most reliably Republican counties in Maryland — voted Democratic by 58 points in a gubernatorial race a single human lifetime ago. By 1994 it had already swung to <span class="metric rep-metric">R+44.15%</span> for Sauerbrey, by 2002 to <span class="metric rep-metric">R+58.74%</span> for Ehrlich, by 2018 to <span class="metric rep-metric">R+70.87%</span> for Hogan — a total inversion of over 129 points from 1986 to 2018. Even in the 2022 Dan Cox collapse, Carroll held <span class="metric rep-metric">R+17.48%</span>, confirming the consolidation is structural, not candidate-driven.</p>
+            <p><strong>The Population Problem:</strong> Republican margins in western and rural Maryland are historically enormous. Garrett, Carroll, Queen Anne's, Cecil, Caroline, and Allegany counties all deliver consistent double-digit to near-annihilation Republican margins. But combined they represent a tiny fraction of Maryland's total electorate. The entire western Maryland region — Garrett, Allegany, and Washington counties combined — casts roughly the same number of votes as a single mid-sized suburban precinct cluster in Montgomery County. The Republican party has consolidated perfectly in the counties where that consolidation matters least for statewide margins.</p>
+            <p><strong>The Appalachian Pattern:</strong> Western Maryland's trajectory mirrors Appalachian Republican consolidation nationally — driven by the decline of unionized extractive industries, the collapse of economic ties to urban centers, the rise of rural cultural identity politics, and accelerating national partisan sorting after 2008. The post-2012 acceleration in Garrett, Washington, and Allegany is particularly sharp, consistent with the national Trump-era polarization that pushed rural whites toward Republicans at record rates regardless of state-level trends.</p>
+            <p><strong>Key Insight:</strong> Republican consolidation in rural Maryland is real, deep, and essentially permanent. But it has become a political trap: the margins are so large in counties so small that they cannot be leveraged into statewide competitiveness against the concentrated Democratic vote production machines of the Baltimore and Washington metropolitan areas. The Republican party dominates in precisely the places that matter least for winning Maryland.</p>
           </div>
-          <div class="finding-card">
-            <h5>⛰️ Southwest Virginia</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>Appalachian Virginia&#x27;s coal and mountain country. Once Democratic union territory, now among Virginia&#x27;s most Republican regions, mirroring trends across Appalachia.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+42.0%</span> → 2016: <span class='data-box rep'>R+59.7%</span> → 2020: <span class='data-box rep'>R+60.1%</span> → 2024: <span class='data-box rep'>R+62.0%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 1.94 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 20.00 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>150,076</span> → 2016: <span class='data-box votes'>151,394</span> → 2020: <span class='data-box votes'>166,275</span> → 2024: <span class='data-box votes'>167,296</span> (+0.6% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>19.0%</span> | REP <span class='data-box rep'>81.0%</span></p>
+
+          <!-- Finding 8: The 1986 Baseline — Before Everything -->
+          <div class="finding-card finding-analysis">
+            <h5>1986: The Pre-Realignment Baseline — When Maryland Was a Different State</h5>
+            <p><strong>What 1986 Actually Looked Like:</strong> The 1986 gubernatorial election — William Donald Schaefer over Thomas Mooney — was a statewide landslide so complete that it erases almost every distinction we now use to describe Maryland's political geography. Schaefer won every single county in Maryland, including every county that is today a Republican stronghold. The margins defy modern intuition entirely:</p>
+            <p>Carroll County: <span class="metric dem-metric">D+58.49%</span> · Queen Anne's County: <span class="metric dem-metric">D+63.66%</span> · Harford County: <span class="metric dem-metric">D+67.49%</span> · Baltimore County: <span class="metric dem-metric">D+70.79%</span> · Garrett County: <span class="metric dem-metric">D+22.27%</span></p>
+            <p>Every one of those counties is today a reliable Republican jurisdiction in competitive races. In 1986 every single one voted Democratic by double digits or more. Carroll County — which gave Hogan <span class="metric rep-metric">R+70.87%</span> in 2018 — gave Schaefer <span class="metric dem-metric">D+58.49%</span> in 1986. That is a 129-point swing between the same type of race within a single human lifetime.</p>
+            <p><strong>What Made 1986 Possible:</strong> Schaefer's personal popularity as Baltimore's legendary long-serving mayor, the weakness of his opponents, and the pre-realignment structure of Maryland's partisan identity all contributed. In 1986 Maryland had not yet undergone the national partisan sorting that would re-align white working-class and rural voters toward Republicans. The New Deal Democratic coalition — which had held blue-collar whites, urban Blacks, and rural Southerners together in a single party — had not yet collapsed in Maryland the way it had elsewhere. White rural and suburban voters still had living memory of the Democratic Party as the party of local government, working families, and state investment. That coalition evaporated nationally during the Reagan era and in Maryland specifically during the 1990s.</p>
+            <p><strong>The Senate Exception — Democrats Always Held the Line:</strong> Even as the governor's race became genuinely competitive in the 1990s, Maryland's U.S. Senate seats held Democratic through every single cycle in this dataset. Barbara Mikulski won in 1986 by <span class="metric dem-metric">D+21.38%</span>, in 1992 by <span class="metric dem-metric">D+42.02%</span>, and in 1998 by <span class="metric dem-metric">D+41.00%</span> even as Sauerbrey nearly won the governor's race that same year. The Senate baseline reveals that a strong enough Republican gubernatorial candidate could peel off ticket-splitters in the suburbs, but could never actually dislodge the structural Democratic majority that always re-emerged in higher-salience, better-turnout federal races.</p>
+            <p><strong>Key Insight:</strong> The 1986 election is not just a historical footnote — it is the deepest possible baseline for understanding how radical Maryland's realignment has been. The state has not merely shifted; it has structurally re-sorted across every geographic and demographic category, replacing a fluid pre-sorted coalition politics with the rigid metro-rural polarization that now defines both parties' Maryland strategies.</p>
           </div>
-          <div class="finding-card">
-            <h5>🌾 Southside/Rural Virginia</h5>
-            <p style='margin-bottom:12px;color:#4b5563;'>Rural counties south of Richmond with agricultural and manufacturing economies. Historically Democratic, now reliably Republican as rural realignment continues statewide.</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+12.8%</span> → 2016: <span class='data-box rep'>R+25.0%</span> → 2020: <span class='data-box rep'>R+25.8%</span> → 2024: <span class='data-box rep'>R+30.9%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 5.10 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 18.05 pts toward Republican</p>
-            <p><strong>Turnout Trend:</strong> 2012: <span class='data-box votes'>188,646</span> → 2016: <span class='data-box votes'>187,980</span> → 2020: <span class='data-box votes'>203,680</span> → 2024: <span class='data-box votes'>203,993</span> (+0.2% vs 2020)</p>
-            <p><strong>Latest (2024) Two-Party Split:</strong> DEM <span class='data-box dem'>34.6%</span> | REP <span class='data-box rep'>65.4%</span></p>
+
+          <!-- Finding 9: 1994 Republican High-Water Mark -->
+          <div class="finding-card finding-analysis">
+            <h5>1994: The Republican High-Water Mark and the Window That Closed</h5>
+            <p><strong>How Close It Got:</strong> The 1994 Glendening vs. Sauerbrey governor's race was the closest competitive statewide contest in the entire dataset — Sauerbrey lost by less than 6,000 votes out of nearly 1.4 million cast, under one-half of one percent. She carried a majority of Maryland's counties. Republicans came within a recount-level margin of winning the governorship in what was still, briefly, a genuinely competitive state.</p>
+            <p><strong>What Made It Close — The 1994 Suburban Map:</strong> In 1994, the suburban counties that have since realigned Democratic were all firmly in the Republican column: Anne Arundel <span class="metric rep-metric">R+20.70%</span> · Frederick <span class="metric rep-metric">R+29.08%</span> · Harford <span class="metric rep-metric">R+29.59%</span> · Carroll <span class="metric rep-metric">R+44.15%</span> · Baltimore County <span class="metric rep-metric">R+13.60%</span>. Howard County went <span class="metric rep-metric">R+7.14%</span> for Sauerbrey — the last time Howard would vote Republican in a governor's race for the next 28 years. That is a county now delivering <span class="metric dem-metric">D+43.38%</span> for Democrats.</p>
+            <p><strong>The Senate Contrast in 1994:</strong> Critically, even in 1994 — the closest Republican approach to Maryland statewide dominance in this entire dataset — Paul Sarbanes won his U.S. Senate race by <span class="metric dem-metric">D+18.20%</span>. The same electorate that nearly elected a Republican governor handed the Senate seat to a Democrat by 18 points. This split reveals that the Republican gubernatorial threat in Maryland during the 1990s was specifically a gubernatorial-race phenomenon driven by weaker Democratic candidates and lower-salience off-year turnout dynamics, not evidence of durable structural competitiveness in the state as a whole.</p>
+            <p><strong>The Decade That Closed the Window:</strong> Between 1994 and 2002, the suburban counties that enabled Republican near-victory began their realignment. Howard crossed back to Democratic presidentially by 1992, then gubernatorially by 1998. Baltimore County stayed Republican gubernatorially through 2018 but went Democratic presidentially from 1992. Anne Arundel stayed Republican gubernatorially well into the Hogan era but finally flipped both ways in 2020–2022. Every year that passed after 1994 made the 1994 Republican path harder to replicate — not because the Republican candidates got worse, but because the structural preconditions for that path were systematically being dismantled by demographic change.</p>
+            <p><strong>Key Insight:</strong> 1994 represents the last moment the Republican Party held the structural prerequisites to win Maryland statewide. Every suburban county that powered Sauerbrey's near-victory has since moved 20 to 50+ points toward Democrats. The window closed, latched, and the key was thrown away.</p>
           </div>
-          <div class="finding-card">
-            <h5>📌 Chesterfield County - Detailed Analysis</h5>
-            <p><strong>Region:</strong> Richmond Metro</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+7.9%</span> → 2016: <span class='data-box rep'>R+2.4%</span> → 2020: <span class='data-box dem'>D+6.8%</span> → 2024: <span class='data-box dem'>D+9.1%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 2.31 pts toward Democratic</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 16.96 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>54.6%</span> (<span class='data-box votes'>112,869</span>) | REP <span class='data-box rep'>45.4%</span> (<span class='data-box votes'>94,030</span>) | Total <span class='data-box votes'>210,628</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>53.4%</span> (<span class='data-box votes'>106,935</span>) | REP <span class='data-box rep'>46.6%</span> (<span class='data-box votes'>93,326</span>) | Total <span class='data-box votes'>203,884</span></p>
-            <p><strong>Turnout Change:</strong> +3.3%</p>
-            <p>No party flip</p>
+
+          <!-- Finding 10: The Candidate Effect and Harford County -->
+          <div class="finding-card finding-analysis">
+            <h5>The Candidate Effect: Hogan's Victories, Harford County, and the Limits of Crossover Appeal</h5>
+            <p><strong>What Hogan Proved — And What He Didn't:</strong> Larry Hogan won Maryland's governorship in 2014 (<span class="metric rep-metric">R+4.5%</span> statewide) and 2018 (a larger margin) running explicitly as a non-ideological, moderate, anti-tax Republican who distanced himself from national conservative politics. His victories are genuine political achievements in a Democratic-leaning state. But they proved specifically that a maximally crossover-appealing Republican candidate running in a low-turnout gubernatorial environment with a weak Democratic opponent could overcome Maryland's structural Democratic baseline — not that the structural baseline had weakened.</p>
+            <p><strong>Harford County: The Most Extreme Single-County Candidate Swing in the Dataset:</strong> Harford County is the most dramatic illustration of how much a candidate drives gubernatorial results in Maryland independent of structural trends. Harford voted <span class="metric rep-metric">R+21.88%</span> for Romney presidentially in 2012, then <span class="metric rep-metric">R+57.15%</span> for Hogan in 2014 — a 35-point surge above its presidential baseline, reflecting Hogan's enormous personal popularity in exactly the kind of exurban, working-class-white county where he ran best. By 2018 Harford gave Hogan <span class="metric rep-metric">R+59.31%</span> — his second-highest county margin. Then in 2022, against Dan Cox, Harford collapsed to <span class="metric rep-metric">R+8.46%</span>. That is a 51-point intra-party swing within the same county in the same race type in four years, with no change in the county's underlying demographics. The county was never structurally an R+59 county; it was responding entirely to the specific candidate.</p>
+            <p><strong>The 2018 Compression Map — And What It Revealed:</strong> In 2018 with Jealous as nominee, even counties deep in the Democratic structural zone produced jarring results: Montgomery County fell to <span class="metric dem-metric">D+5.39%</span> (its lowest gubernatorial margin since the pre-realignment era), Howard County went <span class="metric rep-metric">R+19.66%</span>, and Baltimore County went <span class="metric rep-metric">R+27.84%</span>. Every one of those same counties came roaring back in 2022: Montgomery <span class="metric dem-metric">D+59.58%</span>, Howard <span class="metric dem-metric">D+43.38%</span>, Baltimore County <span class="metric dem-metric">D+30.70%</span>. The structural trend never changed direction — it was temporarily masked by the worst-case candidate combination of a strong Republican crossover candidate opposite a weak Democratic nominee.</p>
+            <p><strong>The 2024 Senate Test — Hogan's Maximum and Its Ceiling:</strong> When Hogan finally ran statewide against the structural Democratic trend in the 2024 Senate race — his first federal election, as himself, with maximum name recognition — he received <span class="metric rep-metric">42.84%</span> statewide against Angela Alsobrooks. That is better than most Republican Senate candidates in Maryland get. It is worse than what Democrats get running against Republicans statewide in virtually every other context. Maryland Democrats had won Senate races in this dataset by margins ranging from <span class="metric dem-metric">D+11.80%</span> (2024) to <span class="metric dem-metric">D+42.02%</span> (1992). Larry Hogan at his personal best produced a <span class="metric dem-metric">D+11.80%</span> Democratic Senate victory. That is his ceiling — and the floor beneath it is structural, not candidate-driven.</p>
+            <p><strong>Key Insight:</strong> The candidate effect in Maryland is real but bounded. Hogan proved that exceptional Republican candidates in exceptional conditions can win the governorship. But he also proved, in 2024, that even the most crossover-capable Republican candidate Maryland can produce cannot close the structural Democratic gap in a higher-turnout, higher-salience federal race. The realignment doesn't pause for popular candidates — it just allows them to borrow time.</p>
           </div>
-          <div class="finding-card">
-            <h5>📌 Henry County - Detailed Analysis</h5>
-            <p><strong>Region:</strong> Southside/Rural</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+15.1%</span> → 2016: <span class='data-box rep'>R+29.9%</span> → 2020: <span class='data-box rep'>R+29.4%</span> → 2024: <span class='data-box rep'>R+33.0%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 3.64 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 17.94 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>33.5%</span> (<span class='data-box votes'>8,457</span>) | REP <span class='data-box rep'>66.5%</span> (<span class='data-box votes'>16,800</span>) | Total <span class='data-box votes'>25,474</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>35.3%</span> (<span class='data-box votes'>9,127</span>) | REP <span class='data-box rep'>64.7%</span> (<span class='data-box votes'>16,725</span>) | Total <span class='data-box votes'>26,105</span></p>
-            <p><strong>Turnout Change:</strong> -2.4%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>📌 Lee County - Detailed Analysis</h5>
-            <p><strong>Region:</strong> Southwest Virginia</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+45.2%</span> → 2016: <span class='data-box rep'>R+64.5%</span> → 2020: <span class='data-box rep'>R+69.8%</span> → 2024: <span class='data-box rep'>R+72.4%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 2.58 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 27.14 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>13.8%</span> (<span class='data-box votes'>1,391</span>) | REP <span class='data-box rep'>86.2%</span> (<span class='data-box votes'>8,674</span>) | Total <span class='data-box votes'>10,122</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>15.1%</span> (<span class='data-box votes'>1,489</span>) | REP <span class='data-box rep'>84.9%</span> (<span class='data-box votes'>8,365</span>) | Total <span class='data-box votes'>9,946</span></p>
-            <p><strong>Turnout Change:</strong> +1.8%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>📌 Chesapeake city - Detailed Analysis</h5>
-            <p><strong>Region:</strong> Hampton Roads</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box dem'>D+1.1%</span> → 2016: <span class='data-box rep'>R+1.3%</span> → 2020: <span class='data-box dem'>D+6.6%</span> → 2024: <span class='data-box dem'>D+3.8%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 2.73 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 2.79 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>51.9%</span> (<span class='data-box votes'>65,399</span>) | REP <span class='data-box rep'>48.1%</span> (<span class='data-box votes'>60,550</span>) | Total <span class='data-box votes'>128,001</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>53.3%</span> (<span class='data-box votes'>66,377</span>) | REP <span class='data-box rep'>46.7%</span> (<span class='data-box votes'>58,180</span>) | Total <span class='data-box votes'>127,108</span></p>
-            <p><strong>Turnout Change:</strong> +0.7%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>📌 Virginia Beach city - Detailed Analysis</h5>
-            <p><strong>Region:</strong> Hampton Roads</p>
-            <p><strong>Margin Trend:</strong> 2012: <span class='data-box rep'>R+2.6%</span> → 2016: <span class='data-box rep'>R+3.8%</span> → 2020: <span class='data-box dem'>D+5.5%</span> → 2024: <span class='data-box dem'>D+2.7%</span></p>
-            <p><strong>Recent Swing (2020 → 2024):</strong> 2.85 pts toward Republican</p>
-            <p><strong>Long-term Swing (2012 → 2024):</strong> 5.26 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>51.3%</span> (<span class='data-box votes'>115,412</span>) | REP <span class='data-box rep'>48.7%</span> (<span class='data-box votes'>109,375</span>) | Total <span class='data-box votes'>228,771</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>52.8%</span> (<span class='data-box votes'>117,393</span>) | REP <span class='data-box rep'>47.2%</span> (<span class='data-box votes'>105,087</span>) | Total <span class='data-box votes'>227,561</span></p>
-            <p><strong>Turnout Change:</strong> +0.5%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>🔄 Most Realigned Counties (2020 → 2024)</h5>
-            <p>Counties ranked by absolute margin swing. Includes multi-year trends, turnout changes, and party control shifts.</p>
-          </div>
-          <div class="finding-card">
-            <h5>Manassas Park city: 13.23-Point Realignment</h5>
-            <p><strong>Region:</strong> Northern Virginia</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+33.7%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+20.5%</span></span></p>
-            <p><strong>Swing Direction:</strong> 13.23 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 5.29 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>60.2%</span> (<span class='data-box votes'>3,506</span>) | REP <span class='data-box rep'>39.8%</span> (<span class='data-box votes'>2,314</span>) | Total <span class='data-box votes'>5,997</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>66.9%</span> (<span class='data-box votes'>3,992</span>) | REP <span class='data-box rep'>33.1%</span> (<span class='data-box votes'>1,979</span>) | Total <span class='data-box votes'>6,087</span></p>
-            <p><strong>Turnout Change:</strong> -1.5%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>Lynchburg city: 10.74-Point Realignment</h5>
-            <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+2.7%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+8.0%</span></span></p>
-            <p><strong>Swing Direction:</strong> 10.74 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 2.76 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>46.0%</span> (<span class='data-box votes'>16,664</span>) | REP <span class='data-box rep'>54.0%</span> (<span class='data-box votes'>19,574</span>) | Total <span class='data-box votes'>37,023</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>51.4%</span> (<span class='data-box votes'>18,048</span>) | REP <span class='data-box rep'>48.6%</span> (<span class='data-box votes'>17,097</span>) | Total <span class='data-box votes'>36,363</span></p>
-            <p><strong>Turnout Change:</strong> +1.8%</p>
-            <p><strong style='color: #d97706;'>Flip: Democratic → Republican</strong></p>
-          </div>
-          <div class="finding-card">
-            <h5>Buckingham County: 10.34-Point Realignment</h5>
-            <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box rep'>R+13.4%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+23.7%</span></span></p>
-            <p><strong>Swing Direction:</strong> 10.34 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 26.20 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>38.1%</span> (<span class='data-box votes'>2,988</span>) | REP <span class='data-box rep'>61.9%</span> (<span class='data-box votes'>4,847</span>) | Total <span class='data-box votes'>7,925</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>43.3%</span> (<span class='data-box votes'>3,471</span>) | REP <span class='data-box rep'>56.7%</span> (<span class='data-box votes'>4,544</span>) | Total <span class='data-box votes'>8,126</span></p>
-            <p><strong>Turnout Change:</strong> -2.5%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>Manassas city: 9.55-Point Realignment</h5>
-            <p><strong>Region:</strong> Northern Virginia</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+24.7%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+15.1%</span></span></p>
-            <p><strong>Swing Direction:</strong> 9.55 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 1.64 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>57.6%</span> (<span class='data-box votes'>9,048</span>) | REP <span class='data-box rep'>42.4%</span> (<span class='data-box votes'>6,670</span>) | Total <span class='data-box votes'>16,100</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>62.3%</span> (<span class='data-box votes'>10,356</span>) | REP <span class='data-box rep'>37.7%</span> (<span class='data-box votes'>6,256</span>) | Total <span class='data-box votes'>16,968</span></p>
-            <p><strong>Turnout Change:</strong> -5.1%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>Covington city: 9.28-Point Realignment</h5>
-            <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box rep'>R+24.2%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+33.5%</span></span></p>
-            <p><strong>Swing Direction:</strong> 9.28 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 48.49 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>33.3%</span> (<span class='data-box votes'>818</span>) | REP <span class='data-box rep'>66.7%</span> (<span class='data-box votes'>1,642</span>) | Total <span class='data-box votes'>2,480</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>37.9%</span> (<span class='data-box votes'>964</span>) | REP <span class='data-box rep'>62.1%</span> (<span class='data-box votes'>1,580</span>) | Total <span class='data-box votes'>2,603</span></p>
-            <p><strong>Turnout Change:</strong> -4.7%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>Surry County: 9.07-Point Realignment</h5>
-            <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+8.4%</span></span> → <span class="metric">2024: <span class='data-box rep'>R+0.7%</span></span></p>
-            <p><strong>Swing Direction:</strong> 9.07 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 21.97 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>49.7%</span> (<span class='data-box votes'>2,176</span>) | REP <span class='data-box rep'>50.3%</span> (<span class='data-box votes'>2,205</span>) | Total <span class='data-box votes'>4,441</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>54.2%</span> (<span class='data-box votes'>2,397</span>) | REP <span class='data-box rep'>45.8%</span> (<span class='data-box votes'>2,025</span>) | Total <span class='data-box votes'>4,471</span></p>
-            <p><strong>Turnout Change:</strong> -0.7%</p>
-            <p><strong style='color: #d97706;'>Flip: Democratic → Republican</strong></p>
-          </div>
-          <div class="finding-card">
-            <h5>Prince William County: 9.02-Point Realignment</h5>
-            <p><strong>Region:</strong> Northern Virginia</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+27.5%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+18.5%</span></span></p>
-            <p><strong>Swing Direction:</strong> 9.02 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 2.25 pts toward Democratic</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>59.2%</span> (<span class='data-box votes'>131,128</span>) | REP <span class='data-box rep'>40.8%</span> (<span class='data-box votes'>90,203</span>) | Total <span class='data-box votes'>228,712</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>63.8%</span> (<span class='data-box votes'>142,863</span>) | REP <span class='data-box rep'>36.2%</span> (<span class='data-box votes'>81,222</span>) | Total <span class='data-box votes'>228,056</span></p>
-            <p><strong>Turnout Change:</strong> +0.3%</p>
-            <p>No party flip</p>
-          </div>
-          <div class="finding-card">
-            <h5>Charles City County: 8.82-Point Realignment</h5>
-            <p><strong>Region:</strong> Other</p>
-            <p><strong>Margin Change:</strong> <span class="metric">2020: <span class='data-box dem'>D+19.7%</span></span> → <span class="metric">2024: <span class='data-box dem'>D+10.9%</span></span></p>
-            <p><strong>Swing Direction:</strong> 8.82 pts toward Republican</p>
-            <p><strong>Long-term Trend (2012 → 2024):</strong> 22.16 pts toward Republican</p>
-            <p><strong>2024 Results:</strong> DEM <span class='data-box dem'>55.4%</span> (<span class='data-box votes'>2,384</span>) | REP <span class='data-box rep'>44.6%</span> (<span class='data-box votes'>1,917</span>) | Total <span class='data-box votes'>4,353</span></p>
-            <p><strong>2020 Results:</strong> DEM <span class='data-box dem'>59.8%</span> (<span class='data-box votes'>2,624</span>) | REP <span class='data-box rep'>40.2%</span> (<span class='data-box votes'>1,761</span>) | Total <span class='data-box votes'>4,441</span></p>
-            <p><strong>Turnout Change:</strong> -2.0%</p>
-            <p>No party flip</p>
-          </div>
+
         </div>
       </div>
       <div class="sidebar-footer" style="padding: 16px 0; text-align: center; color: #888; font-size: 15px; border-top: 1px solid #e5e7eb; background: #f9fafb;">
@@ -1209,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Main Controls Dropdown (Contest Selector) -->
     <div class="main-controls" id="main-controls">
         <div class="controls-header" style="display:flex;align-items:center;justify-content:space-between;">
-            <h3>🗳️ Virginia Election Contests</h3>
+            <h3>🗳️ Maryland Election Contests</h3>
             <div style="display:flex;align-items:center;gap:8px;">
               <button class="minimize-btn" onclick="toggleMainControls()" id="controls-minimize-btn">−</button>
             </div>
@@ -1273,14 +1132,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // --- CONFIG ---
     const CONFIG = {
+      // Set your own Mapbox public token here before running locally.
       mapboxToken: 'pk.eyJ1Ijoic2hhbWFyZGF2aXMiLCJhIjoiY21sajF2czdnMDlqMjNlcTRrcm5iczdnMSJ9.OopZliDOcTI8TpEEqW8fkQ',
       paths: {
-        counties: './Data/geo/va_counties_2020.geojson',
-        election: './Data/va_county_aggregated_results.json'
+        counties: './Data/geo/md_counties_2020.geojson',
+        election: './Data/md_county_aggregated_results_1986_2024.json'
       },
-      center: [-78.5, 37.5], // Virginia center
+      center: [-77.23697, 38.80482], // Maryland center
       zoom: 6.2,
-      fitBounds: [[-83.7, 36.5], [-75.2, 39.5]] // Virginia bounds
+      fitBounds: [[-79.487651, 37.886605], [-74.986282, 39.723037]] // Maryland bounds
     };
 
     mapboxgl.accessToken = CONFIG.mapboxToken;
@@ -1289,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let electionData = null;
     let currentContest = null;
-    let currentView = 'counties'; // Default to county view for Tennessee map
+    let currentView = 'counties'; // Default to county view for Maryland map
 
 
     function setStatus(text, timeout = 4000) {
@@ -1495,13 +1355,14 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
         return m[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
       }
 
-      // Explicit optgroup order for statewide Virginia contests
+      // Explicit optgroup order for statewide Maryland contests
       const allowedOffices = [
         'US President',
         'US Senate',
         'Governor',
         'Lieutenant Governor',
         'Attorney General',
+        'Comptroller',
         'Secretary of State',
         'Treasurer',
         'Auditor'
@@ -1513,7 +1374,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
         const yearObj = electionData.results_by_year[year];
         if (!yearObj) return;
         
-        // Missouri structure: yearObj keys are contest names, values are county objects
+        // Maryland structure: yearObj keys are contest names, values are county objects
         Object.keys(yearObj).forEach(contestName => {
           const countyData = yearObj[contestName];
           if (!countyData) return;
@@ -1538,16 +1399,22 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
             'PRESIDENT': 'US President',
             'US SENATE': 'US Senate',
             'U.S. SENATE': 'US Senate',
-            'MO GOVERNOR': 'Governor',
+            'U.S. SENATOR': 'US Senate',
+            'US SENATOR': 'US Senate',
+            'UNITED STATES SENATOR': 'US Senate',
+            'MD GOVERNOR': 'Governor',
             'GOVERNOR': 'Governor',
-            'MO LIEUTENANT GOVERNOR': 'Lieutenant Governor',
+            'MD LIEUTENANT GOVERNOR': 'Lieutenant Governor',
             'LIEUTENANT GOVERNOR': 'Lieutenant Governor',
-            'MO ATTORNEY GENERAL': 'Attorney General',
+            'MD ATTORNEY GENERAL': 'Attorney General',
             'ATTORNEY GENERAL': 'Attorney General',
-            'MO TREASURER': 'Treasurer',
+            'MD COMPTROLLER': 'Comptroller',
+            'COMPTROLLER': 'Comptroller',
+            'STATE COMPTROLLER': 'Comptroller',
+            'MD TREASURER': 'Treasurer',
             'TREASURER': 'Treasurer',
             'STATE TREASURER': 'Treasurer',
-            'MO SECRETARY OF STATE': 'Secretary of State',
+            'MD SECRETARY OF STATE': 'Secretary of State',
             'SECRETARY OF STATE': 'Secretary of State',
             'STATE AUDITOR': 'Auditor',
             'AUDITOR': 'Auditor'
@@ -1606,7 +1473,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
             }
             sortedContests.forEach(item => {
               const o = document.createElement('option');
-              // Missouri structure: year||contestKey (no category level)
+              // Maryland structure: year||contestKey (no category level)
               o.value = `${item.year}||${item.contestKey}`;
               let displayName = `${officeLabel} (${item.year})`;
               if (item.contestName && !officeLabel.includes(item.contestName)) {
@@ -1627,7 +1494,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
       const parts = (encoded || '').split('||');
       if (parts.length < 2) return;
       
-      // Missouri structure: year||contestKey (no category)
+      // Maryland structure: year||contestKey (no category)
       const [year, contestKey] = parts;
       
       if (!electionData || !electionData.results_by_year || !electionData.results_by_year[year] || !electionData.results_by_year[year][contestKey]) {
@@ -1643,7 +1510,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
 
       currentContest = { 
         year, 
-        contestType: contestKey,  // Use contestKey as contestType for Missouri
+        contestType: contestKey,  // Use contestKey as contestType for Maryland
         key: contestKey, 
         data: contestData 
       };
@@ -1822,7 +1689,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
       otherPct = totalVotes > 0 ? (otherVotes / totalVotes) * 100 : 0;
       const marginPct = Math.abs(demPct - repPct);
       // Determine winner and get actual candidate name
-      // Missouri structure: get candidates from first county (they're all the same)
+      // Maryland structure: get candidates from first county (they are usually the same)
       let demCandidate = '';
       let repCandidate = '';
       if (currentContest && currentContest.data) {
@@ -1837,7 +1704,7 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
         const demCounts = Object.create(null);
         const repCounts = Object.create(null);
         try {
-          // Missouri structure: counties directly in currentContest.data
+          // Maryland structure: counties directly in currentContest.data
           Object.values(currentContest.data).forEach(cd => {
             if (!cd || typeof cd !== 'object') return;
             const d = (cd.dem_candidate || cd.dem || '').toString().trim();
@@ -1874,34 +1741,11 @@ function mergeGeoElectionData(boundaryGeoJSON, electionData, countyKey='County',
         winner = 'Tie';
         winnerCandidate = 'Tied';
       }
-      // Calculate competitiveness
-      let compLabel = '';
-      let compColor = '#6b7280';
-      if (marginPct >= 40) {
-        compLabel = winner === 'Republican' ? "Annihilation Republican (≥40.00%)" : "Annihilation Democratic (≥40.00%)";
-        compColor = winner === 'Republican' ? '#450a0a' : '#0c1d56';
-      } else if (marginPct >= 30) {
-        compLabel = winner === 'Republican' ? "Dominant Republican (30.00-39.99%)" : "Dominant Democratic (30.00-39.99%)";
-        compColor = winner === 'Republican' ? '#7f1d1d' : '#1e3a8a';
-      } else if (marginPct >= 20) {
-        compLabel = winner === 'Republican' ? "Stronghold Republican (20.00-29.99%)" : "Stronghold Democratic (20.00-29.99%)";
-        compColor = winner === 'Republican' ? '#991b1b' : '#1e40af';
-      } else if (marginPct >= 10) {
-        compLabel = winner === 'Republican' ? "Safe Republican (10.00-19.99%)" : "Safe Democratic (10.00-19.99%)";
-        compColor = winner === 'Republican' ? '#dc2626' : '#3b82f6';
-      } else if (marginPct >= 5.5) {
-        compLabel = winner === 'Republican' ? "Likely Republican (5.50-9.99%)" : "Likely Democratic (5.50-9.99%)";
-        compColor = winner === 'Republican' ? '#ef4444' : '#60a5fa';
-      } else if (marginPct >= 1) {
-        compLabel = winner === 'Republican' ? "Lean Republican (1.00-5.49%)" : "Lean Democratic (1.00-5.49%)";
-        compColor = winner === 'Republican' ? '#f87171' : '#93c5fd';
-      } else if (marginPct >= 0.5) {
-        compLabel = winner === 'Republican' ? "Tilt Republican (0.50-0.99%)" : "Tilt Democratic (0.50-0.99%)";
-        compColor = winner === 'Republican' ? '#fca5a5' : '#bfdbfe';
-      } else {
-        compLabel = winner === 'Democratic' ? 'Tossup (Democratic Win) (<0.50%)' : 'Tossup (Republican Win) (<0.50%)';
-        compColor = winner === 'Democratic' ? '#2563eb' : '#dc2626';
-      }
+      // Calculate competitiveness using refined criteria.
+      const winnerCode = winner === 'Republican' ? 'R' : (winner === 'Democratic' ? 'D' : 'T');
+      const roundedMargin = Math.round(marginPct * 100) / 100;
+      const compLabel = categoryLabelForMargin(roundedMargin, winnerCode);
+      const compColor = categoryColorForMargin(roundedMargin, winnerCode);
       // Build the horizontal bar with D/R/Other if present
       let barHTML = '';
       let barFlex = '';
@@ -2146,7 +1990,7 @@ function toggleSidebar() {
         return;
       }
       
-      // Missouri structure: counties are directly in currentContest.data
+      // Maryland structure: counties are directly in currentContest.data
       const countyResults = currentContest.data;
       let countyData = findCountyResult(countyResults, countyName);
       
@@ -2159,14 +2003,14 @@ function toggleSidebar() {
       // Get contest info from the current contest
       const contestName = countyData.contest || currentContest.contestType || 'Contest';
       const year = currentContest.year;
-      // Skip Tennessee contests
+      // Skip unsupported contests
       if ((contestName && contestName.toUpperCase().includes('TN')) || (currentContest.category && currentContest.category.toUpperCase().includes('TN'))) {
         contentEl.innerHTML = '<p>This contest is not available for county analysis.</p>';
         detailsDiv.style.display = 'block';
         return;
       }
       
-      // Get votes from the Tennessee data structure
+      // Get votes from the Maryland data structure
       const demVotes = countyData.dem_votes || 0;
       const repVotes = countyData.rep_votes || 0;
       const otherVotes = countyData.other_votes || 0;
@@ -2192,7 +2036,7 @@ function toggleSidebar() {
         const demCounts = Object.create(null);
         const repCounts = Object.create(null);
         try {
-          // Missouri structure: counties directly in currentContest.data
+          // Maryland structure: counties directly in currentContest.data
           Object.values(currentContest.data).forEach(cd => {
             if (!cd || typeof cd !== 'object') return;
             const d = (cd.dem_candidate || cd.dem || '').toString().trim();
@@ -2223,8 +2067,8 @@ function toggleSidebar() {
       
       // Margin calculation and winner determination
       const margin = demVotes - repVotes;
-      // margin_pct is stored as margin % of total votes in the aggregated JSON.
-      const marginPct = parseFloat(countyData.margin_pct) || 0;
+      // Margin percentage is computed from total votes.
+      const marginPct = totalVotes > 0 ? (Math.abs(margin) / totalVotes) * 100 : 0;
       // Determine winner from vote counts since winner field doesn't exist in data
       const winner = demVotes > repVotes ? 'Democratic' : (repVotes > demVotes ? 'Republican' : 'Tie');
       const winnerCandidate = winner === 'Democratic' ? demCandidate : repCandidate;
@@ -2233,22 +2077,32 @@ function toggleSidebar() {
       // Get competitiveness from the data
       // Use competitiveness from countyData, fallback to contest-level if present
       let countyCompetitiveness = countyData.competitiveness || {};
-      if ((!countyCompetitiveness.category || !countyCompetitiveness.party) && currentContest?.data?.competitiveness) {
+      if ((!countyCompetitiveness.description || countyCompetitiveness.description === 'Unknown') && currentContest?.data?.competitiveness) {
         countyCompetitiveness = currentContest.data.competitiveness;
       }
-      let countyCompLabel = '';
-      if (countyCompetitiveness?.category && countyCompetitiveness?.party) {
-        if (countyCompetitiveness.party === 'Tossup') {
-          countyCompLabel = winner === 'Democratic'
-            ? 'Tossup (Democratic Win)'
-            : (winner === 'Republican' ? 'Tossup (Republican Win)' : 'Tossup (Tie)');
+      const countyCompColor = countyCompetitiveness.color || '#6b7280';
+        const roundedMargin = Math.round(marginPct * 100) / 100;
+        const winnerCode = winner === 'Republican' ? 'R' : (winner === 'Democratic' ? 'D' : 'T');
+        let countyCompLabel = '';
+        if (roundedMargin >= 40) {
+          countyCompLabel = winner === 'Republican' ? 'Annihilation Republican' : 'Annihilation Democratic';
+        } else if (roundedMargin >= 30) {
+          countyCompLabel = winner === 'Republican' ? 'Dominant Republican' : 'Dominant Democratic';
+        } else if (roundedMargin >= 20) {
+          countyCompLabel = winner === 'Republican' ? 'Stronghold Republican' : 'Stronghold Democratic';
+        } else if (roundedMargin >= 10) {
+          countyCompLabel = winner === 'Republican' ? 'Safe Republican' : 'Safe Democratic';
+        } else if (roundedMargin >= 5.5) {
+          countyCompLabel = winner === 'Republican' ? 'Likely Republican' : 'Likely Democratic';
+        } else if (roundedMargin >= 1) {
+          countyCompLabel = winner === 'Republican' ? 'Lean Republican' : 'Lean Democratic';
+        } else if (roundedMargin >= 0.5) {
+          countyCompLabel = winner === 'Republican' ? 'Tilt Republican' : 'Tilt Democratic';
         } else {
-          countyCompLabel = `${countyCompetitiveness.category} ${countyCompetitiveness.party}`;
+          countyCompLabel = winner === 'Republican'
+            ? 'Tossup (Republican Win)'
+            : (winner === 'Democratic' ? 'Tossup (Democratic Win)' : 'Tossup (Tie)');
         }
-      } else {
-        // Fallback if competitiveness is missing in data.
-        countyCompLabel = winner === 'Republican' ? 'Unknown Republican' : (winner === 'Democratic' ? 'Unknown Democratic' : 'Unknown');
-      }
       // Accessibility palette for winner color
       function cbColorForMargin(marginPct, winner) {
         if (marginPct >= 40) {
@@ -2313,7 +2167,7 @@ function toggleSidebar() {
   sidebarContent += `<div class="vote-breakdown">`;
   sidebarContent += '<h3 class="sidebar-section-title">🗳️ Vote Breakdown</h3>';
   // For colorblind mode, use the correct accessibility palette for Republican vote breakdown
-  let repColor = '#ef3b2c';
+  let repColor = '#dc2626';
   if (isColorblind) {
     if (parseFloat(marginPct) >= 40) repColor = '#ff9900';
     else if (parseFloat(marginPct) >= 30) repColor = '#ffb84d';
@@ -2325,7 +2179,7 @@ function toggleSidebar() {
     else repColor = '#cccccc';
   } else {
     // Non-accessibility mode: always use red for Republican vote breakdown
-    repColor = '#ef3b2c';
+    repColor = '#dc2626';
   }
   let demColor;
   if (isColorblind) {
@@ -2341,36 +2195,19 @@ function toggleSidebar() {
   }
   sidebarContent += `</div>`;
   
-  // Use legend colors for competitiveness text (match the map legend exactly).
-  function competitivenessColorFor(party, category, winner) {
-    const scale = {
-      Republican: {
-        Annihilation: '#450a0a',
-        Dominant: '#7f1d1d',
-        Stronghold: '#991b1b',
-        Safe: '#dc2626',
-        Likely: '#ef4444',
-        Lean: '#f87171',
-        Tilt: '#fca5a5',
-      },
-      Democratic: {
-        Tilt: '#bfdbfe',
-        Lean: '#93c5fd',
-        Likely: '#60a5fa',
-        Safe: '#3b82f6',
-        Stronghold: '#1e40af',
-        Dominant: '#1e3a8a',
-        Annihilation: '#0c1d56',
-      },
-      Tossup: {
-        Tossup: winner === 'Democratic' ? '#2563eb' : (winner === 'Republican' ? '#dc2626' : '#6b7280'),
-      },
-    };
-    return (scale[party] && scale[party][category]) ? scale[party][category] : '#6b7280';
-  }
-
-  let finalCompColor = competitivenessColorFor(countyCompetitiveness?.party, countyCompetitiveness?.category, winner);
+  // Competitiveness
+  let finalCompColor = '#6b7280'; // Default gray
   let finalCompLabel = countyCompLabel;
+  if (roundedMargin < 0.5) {
+    finalCompLabel = winner === 'Republican'
+      ? 'Tossup (Republican Win)'
+      : (winner === 'Democratic' ? 'Tossup (Democratic Win)' : 'Tossup (Tie)');
+    finalCompColor = winner === 'Republican'
+      ? '#dc2626'
+      : (winner === 'Democratic' ? '#2563eb' : '#6b7280');
+  } else {
+    finalCompColor = categoryColorForMargin(roundedMargin, winnerCode);
+  }
   
   sidebarContent += `<div class="competitiveness-section">`;
   sidebarContent += '<h3 class="sidebar-section-title">🎯 Competitiveness</h3>';
@@ -2808,45 +2645,10 @@ function toggleSidebar() {
             const marginPct = Math.abs(demPct - repPct);
             const winner = demPct > repPct ? 'Democratic' : 'Republican';
             
-            // Determine competitiveness
-            let competitiveness;
-            if (marginPct >= 40) {
-              competitiveness = winner === 'Republican' ? 'Annihilation Republican' : 'Annihilation Democratic';
-            } else if (marginPct >= 30) {
-              competitiveness = winner === 'Republican' ? 'Dominant Republican' : 'Dominant Democratic';
-            } else if (marginPct >= 20) {
-              competitiveness = winner === 'Republican' ? 'Stronghold Republican' : 'Stronghold Democratic';
-            } else if (marginPct >= 10) {
-              competitiveness = winner === 'Republican' ? 'Safe Republican' : 'Safe Democratic';
-            } else if (marginPct >= 5.5) {
-              competitiveness = winner === 'Republican' ? 'Likely Republican' : 'Likely Democratic';
-            } else if (marginPct >= 1) {
-              competitiveness = winner === 'Republican' ? 'Lean Republican' : 'Lean Democratic';
-            } else if (marginPct >= 0.5) {
-              competitiveness = winner === 'Republican' ? 'Tilt Republican' : 'Tilt Democratic';
-            } else {
-              competitiveness = `Tossup (${winner} win)`;
-            }
-            let compColor = '#6b7280';
-            if (competitiveness.includes('Rep')) {
-              if (competitiveness.includes('Annihilation')) compColor = '#450a0a';
-              else if (competitiveness.includes('Dominant')) compColor = '#7f1d1d';
-              else if (competitiveness.includes('Stronghold')) compColor = '#991b1b';
-              else if (competitiveness.includes('Safe')) compColor = '#dc2626';
-              else if (competitiveness.includes('Likely')) compColor = '#ef4444';
-              else if (competitiveness.includes('Lean')) compColor = '#f87171';
-              else if (competitiveness.includes('Tilt')) compColor = '#fca5a5';
-            } else if (competitiveness.includes('Dem')) {
-              if (competitiveness.includes('Annihilation')) compColor = '#0c1d56';
-              else if (competitiveness.includes('Dominant')) compColor = '#1e3a8a';
-              else if (competitiveness.includes('Stronghold')) compColor = '#1e40af';
-              else if (competitiveness.includes('Safe')) compColor = '#3b82f6';
-              else if (competitiveness.includes('Likely')) compColor = '#60a5fa';
-              else if (competitiveness.includes('Lean')) compColor = '#93c5fd';
-              else if (competitiveness.includes('Tilt')) compColor = '#bfdbfe';
-            } else if (competitiveness.includes('Tossup')) {
-              compColor = winner === 'Democratic' ? '#2563eb' : '#dc2626';
-            }
+            const winnerCode = winner === 'Republican' ? 'R' : (winner === 'Democratic' ? 'D' : 'T');
+            const roundedMargin = Math.round(marginPct * 100) / 100;
+            const competitiveness = categoryLabelForMargin(roundedMargin, winnerCode);
+            const compColor = categoryColorForMargin(roundedMargin, winnerCode);
             
             electionInfo = `
               <div style="margin-bottom: 16px;">
@@ -3081,7 +2883,7 @@ function toggleSidebar() {
         // Initialize county search (autocomplete & zoom) once counties are added
         try { if (typeof setupCountySearch === 'function') setupCountySearch(); } catch(e) { console.warn('setupCountySearch failed', e); }
         
-        // Correct Mapbox GL JS bounds for Virginia
+        // Correct Mapbox GL JS bounds for Maryland
         var vaBounds = [
           [-83.7, 36.5], // Southwest corner [minLon, minLat]
           [-75.2, 39.5]  // Northeast corner [maxLon, maxLat]
@@ -3275,11 +3077,11 @@ function filterValidContests(contests) {
         try {
           let year, contestType, contestId;
           if (value.includes('||')) {
-            // Missouri format: year||contestKey (no category level)
+            // Maryland format: year||contestKey (no category level)
             const parts = value.split('||');
             year = parts[0];
             contestType = parts[1];  // contestKey IS the contestType
-            contestId = parts[1];     // Same as contestType for Missouri
+            contestId = parts[1];     // Same as contestType for Maryland
           } else {
             // Old format: year-contestType-contestId
             const parts = value.split('-');
@@ -3288,7 +3090,7 @@ function filterValidContests(contests) {
             contestId = parts[2];
           }
 
-          // Missouri structure: results_by_year[year][contestName][countyName]
+          // Maryland structure: results_by_year[year][contestName][countyName]
           if (!electionData || !electionData.results_by_year || !electionData.results_by_year[year] || !electionData.results_by_year[year][contestType]) {
             console.warn('Selected contest not found in electionData for', { year, contestType });
             currentContest = null;
@@ -3309,7 +3111,7 @@ function filterValidContests(contests) {
           return;
         }
         
-        // Missouri: update map colors and compute statewide totals
+        // Maryland: update map colors and compute statewide totals
         const contestNameEl = document.getElementById('contest-name');
         updateMapColors();
         // Calculate and update statewide results
@@ -3317,7 +3119,7 @@ function filterValidContests(contests) {
 
         // Update contest name in statewide section
         if (contestNameEl) {
-          // Missouri structure: contestType IS the contest name
+          // Maryland structure: contestType IS the contest name
           const label = currentContest.contestType || '';
           contestNameEl.textContent = `${label} (${currentContest.year})`;
         }
@@ -3366,7 +3168,7 @@ function filterValidContests(contests) {
       ]
     ];
 
-  // Missouri structure: counties directly in currentContest.data
+  // Maryland structure: counties directly in currentContest.data
   Object.entries(currentContest.data).forEach(([countyName, result]) => {
       if (!countyName || countyName === 'undefined' || typeof countyName !== 'string') return;
       const competitiveness = result.competitiveness;
@@ -3374,7 +3176,7 @@ function filterValidContests(contests) {
         // Normalize county names for matching
         let normalizedElectionCounty = countyName.toUpperCase().replace(/_/g, ' ');
         
-        // For Missouri: Match NAMELSAD20 (which includes "County" or "city" suffix)
+        // Match NAMELSAD20 (which includes "County" or "city" suffix)
         // Election data: "Boone", "St. Louis City", "St. Louis County"
         // GeoJSON NAMELSAD20: "Boone County", "St. Louis city", "St. Louis County"
         
@@ -3382,12 +3184,17 @@ function filterValidContests(contests) {
         if (!normalizedElectionCounty.includes(' COUNTY') && !normalizedElectionCounty.includes(' CITY')) {
           normalizedElectionCounty = normalizedElectionCounty + ' COUNTY';
         }
-        // Handle St. Louis City case sensitivity: "St. Louis City" -> "ST. LOUIS CITY"
-        // but GeoJSON has "St. Louis city" which uppercases to "ST. LOUIS CITY"
-        
-        colorExpression.push(
-          ['==', countyNameExpr, normalizedElectionCounty]
-        );
+        // Handle alternate abbreviations like "Saint Mary's County" <-> "St. Mary's County".
+        const normalizedCountyVariants = new Set([normalizedElectionCounty]);
+        normalizedCountyVariants.add(normalizedElectionCounty.replace(/\bSAINT\b/g, 'ST.'));
+        normalizedCountyVariants.add(normalizedElectionCounty.replace(/\bSAINT\b/g, 'ST'));
+        normalizedCountyVariants.add(normalizedElectionCounty.replace(/\bST\.\s+/g, 'SAINT '));
+        normalizedCountyVariants.add(normalizedElectionCounty.replace(/\bST\s+/g, 'SAINT '));
+
+        const variantChecks = Array.from(normalizedCountyVariants)
+          .filter(Boolean)
+          .map(v => ['==', countyNameExpr, v]);
+        colorExpression.push(variantChecks.length === 1 ? variantChecks[0] : ['any', ...variantChecks]);
         colorExpression.push(competitiveness.color);
         matchCount++;
       }
@@ -3433,7 +3240,7 @@ function filterValidContests(contests) {
       let totalOtherVotes = 0;
       let totalVotes = 0;
 
-      // Missouri structure: counties directly in currentContest.data
+      // Maryland structure: counties directly in currentContest.data
       Object.values(currentContest.data).forEach(county => {
         totalDemVotes += county.dem_votes || 0;
         totalRepVotes += county.rep_votes || 0;
@@ -3449,28 +3256,75 @@ function filterValidContests(contests) {
       if (!countyResults || !countyName || typeof countyName !== 'string') return null;
 
       const candidates = [];
+      const candidateSet = new Set();
+      function addCandidate(name) {
+        const n = (name || '').toString().trim();
+        if (!n || candidateSet.has(n)) return;
+        candidateSet.add(n);
+        candidates.push(n);
+      }
+      function addSaintVariants(name) {
+        const n = (name || '').toString().trim();
+        if (!n) return;
+        addCandidate(n);
+        addCandidate(n.replace(/\bSaint\b/gi, 'St.'));
+        addCandidate(n.replace(/\bSaint\b/gi, 'St'));
+        addCandidate(n.replace(/\bSt\.?\b/gi, 'Saint'));
+      }
+      function canonicalCountyKey(name) {
+        let n = (name || '').toString().trim();
+        if (!n) return '';
+        if (/^city of\s+/i.test(n)) {
+          const cityBase = n.replace(/^city of\s+/i, '').trim();
+          n = `${cityBase} City`;
+        }
+        n = n
+          .replace(/\bSaint\b/gi, 'St')
+          .replace(/\bSt\.?\b/gi, 'St')
+          .replace(/[^a-z0-9 ]/gi, ' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toUpperCase();
+        return n;
+      }
+
       const base = countyName.trim();
       const normalizedCity = base.replace(/ city$/i, ' City');
       const strippedCounty = base.replace(/ County$/i, '');
+      const noCityOf = base.replace(/^city of\s+/i, '').trim();
 
-      candidates.push(base);
-      candidates.push(normalizedCity);
-      candidates.push(strippedCounty);
+      addSaintVariants(base);
+      addSaintVariants(normalizedCity);
+      addSaintVariants(strippedCounty);
+      if (/^city of\s+/i.test(base)) {
+        addSaintVariants(noCityOf);
+        addSaintVariants(`${noCityOf} City`);
+      }
+      if (/ city$/i.test(base)) {
+        const cityBase = base.replace(/ city$/i, '').trim();
+        addSaintVariants(`City of ${cityBase}`);
+      }
       if (!/ county$/i.test(base) && !/ city$/i.test(base)) {
-        candidates.push(`${base} County`);
+        addSaintVariants(`${base} County`);
       }
       if (!/ city$/i.test(base)) {
-        candidates.push(`${base} City`);
+        addSaintVariants(`${base} City`);
       }
 
       for (const key of candidates) {
         if (countyResults[key]) return countyResults[key];
       }
 
-      // Case-insensitive fallback for mixed "city"/"City" or legacy key casing.
+      // Case-insensitive fallback for mixed "city"/"City", "St."/"Saint", or legacy key casing.
       const targetSet = new Set(candidates.map(v => v.toUpperCase()));
       for (const k of Object.keys(countyResults)) {
         if (targetSet.has(String(k).toUpperCase())) return countyResults[k];
+      }
+
+      // Canonical fallback for punctuation, "City of X" vs "X City", and St./Saint differences.
+      const canonicalTargets = new Set(candidates.map(canonicalCountyKey).filter(Boolean));
+      for (const k of Object.keys(countyResults)) {
+        if (canonicalTargets.has(canonicalCountyKey(k))) return countyResults[k];
       }
       return null;
     }
@@ -3518,6 +3372,12 @@ function filterValidContests(contests) {
         return;
       }
       
+      const sidebarDemVotes = Number(result.dem_votes) || 0;
+      const sidebarRepVotes = Number(result.rep_votes) || 0;
+      const sidebarTotalVotes = Number(result.total_votes) || 0;
+      const sidebarMarginVotes = Math.abs(sidebarDemVotes - sidebarRepVotes);
+      const sidebarMarginPct = sidebarTotalVotes > 0 ? (sidebarMarginVotes / sidebarTotalVotes) * 100 : 0;
+
       const html = `
         <div style="margin-bottom: 16px;">
           <strong>${currentContest.data.contest_name}</strong><br>
@@ -3546,15 +3406,54 @@ function filterValidContests(contests) {
         </div>
         
         <div style="margin-bottom: 16px;">
-          <strong>Margin:</strong> ${result.margin_pct?.toFixed(2) || 0}% 
-          (${Math.abs(result.margin || 0).toLocaleString()} votes)
+          <strong>Margin:</strong> ${sidebarMarginPct.toFixed(2)}% 
+          (${sidebarMarginVotes.toLocaleString()} votes)
         </div>
         
-        ${result.competitiveness ? `
-        <div style="padding: 12px; border-radius: 6px; background: ${result.competitiveness.color}20; border-left: 4px solid ${result.competitiveness.color};">
-          <strong>Rating:</strong> ${result.competitiveness.category} ${result.competitiveness.party}
+        ${result.competitiveness ? (() => {
+          const demVotes = sidebarDemVotes;
+          const repVotes = sidebarRepVotes;
+          const winner = demVotes > repVotes ? 'Democratic' : (repVotes > demVotes ? 'Republican' : 'Tie');
+          const marginPct = sidebarMarginPct;
+          const winnerCode = winner === 'Republican' ? 'R' : (winner === 'Democratic' ? 'D' : 'T');
+          let ratingLabel = '';
+          let ratingColor = '#6b7280';
+
+          if (marginPct >= 40) {
+            ratingLabel = winnerCode === 'R' ? 'Annihilation Republican' : 'Annihilation Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else if (marginPct >= 30) {
+            ratingLabel = winnerCode === 'R' ? 'Dominant Republican' : 'Dominant Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else if (marginPct >= 20) {
+            ratingLabel = winnerCode === 'R' ? 'Stronghold Republican' : 'Stronghold Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else if (marginPct >= 10) {
+            ratingLabel = winnerCode === 'R' ? 'Safe Republican' : 'Safe Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else if (marginPct >= 5.5) {
+            ratingLabel = winnerCode === 'R' ? 'Likely Republican' : 'Likely Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else if (marginPct >= 1) {
+            ratingLabel = winnerCode === 'R' ? 'Lean Republican' : 'Lean Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else if (marginPct >= 0.5) {
+            ratingLabel = winnerCode === 'R' ? 'Tilt Republican' : 'Tilt Democratic';
+            ratingColor = categoryColorForMargin(marginPct, winnerCode);
+          } else {
+            ratingLabel = winner === 'Republican'
+              ? 'Tossup (Republican Win)'
+              : (winner === 'Democratic' ? 'Tossup (Democratic Win)' : 'Tossup (Tie)');
+            ratingColor = winner === 'Republican'
+              ? '#dc2626'
+              : (winner === 'Democratic' ? '#2563eb' : '#6b7280');
+          }
+          return `
+        <div style="padding: 12px; border-radius: 6px; background: ${ratingColor}20; border-left: 4px solid ${ratingColor};">
+          <strong>Rating:</strong> ${ratingLabel}
         </div>
-        ` : ''}
+        `;
+        })() : ''}
       `;
       
       sidebarContent.innerHTML = html;
@@ -3574,24 +3473,35 @@ function filterValidContests(contests) {
     }
 
     function categoryColorForMargin(marginPct, winner) {
-      // NC map criteria: exact same thresholds and colors
+      // Match MO sidebar competitiveness palette for non-tossup tiers.
       if (marginPct >= 40) {
-        return winner === 'R' ? '#67000d' : '#08306b'; // Annihilation
+        return winner === 'R' ? '#67000d' : '#0c1d56'; // Annihilation
       } else if (marginPct >= 30) {
-        return winner === 'R' ? '#a50f15' : '#08519c'; // Dominant
+        return winner === 'R' ? '#7f1d1d' : '#1e3a8a'; // Dominant
       } else if (marginPct >= 20) {
-        return winner === 'R' ? '#cb181d' : '#3182bd'; // Stronghold
+        return winner === 'R' ? '#991b1b' : '#1e40af'; // Stronghold
       } else if (marginPct >= 10) {
-        return winner === 'R' ? '#ef3b2c' : '#6baed6'; // Safe
+        return winner === 'R' ? '#dc2626' : '#3b82f6'; // Safe
       } else if (marginPct >= 5.5) {
-        return winner === 'R' ? '#fb6a4a' : '#9ecae1'; // Likely
+        return winner === 'R' ? '#ef4444' : '#60a5fa'; // Likely
       } else if (marginPct >= 1) {
-        return winner === 'R' ? '#fcae91' : '#c6dbef'; // Lean
+        return winner === 'R' ? '#f87171' : '#93c5fd'; // Lean
       } else if (marginPct >= 0.5) {
-        return winner === 'R' ? '#fee8c8' : '#e1f5fe'; // Tilt
+        return winner === 'R' ? '#fca5a5' : '#bfdbfe'; // Tilt
       } else {
         return '#f7f7f7'; // Tossup
       }
+    }
+
+    function categoryLabelForMargin(marginPct, winner) {
+      if (marginPct >= 40) return winner === 'R' ? 'Annihilation Republican (≥40.00%)' : 'Annihilation Democratic (≥40.00%)';
+      if (marginPct >= 30) return winner === 'R' ? 'Dominant Republican (30.00-39.99%)' : 'Dominant Democratic (30.00-39.99%)';
+      if (marginPct >= 20) return winner === 'R' ? 'Stronghold Republican (20.00-29.99%)' : 'Stronghold Democratic (20.00-29.99%)';
+      if (marginPct >= 10) return winner === 'R' ? 'Safe Republican (10.00-19.99%)' : 'Safe Democratic (10.00-19.99%)';
+      if (marginPct >= 5.5) return winner === 'R' ? 'Likely Republican (5.50-9.99%)' : 'Likely Democratic (5.50-9.99%)';
+      if (marginPct >= 1) return winner === 'R' ? 'Lean Republican (1.00-5.49%)' : 'Lean Democratic (1.00-5.49%)';
+      if (marginPct >= 0.5) return winner === 'R' ? 'Tilt Republican (0.50-0.99%)' : 'Tilt Democratic (0.50-0.99%)';
+      return winner === 'R' ? 'Tossup (Republican Win)' : (winner === 'D' ? 'Tossup (Democratic Win)' : 'Tossup (Tie)');
     }
 
     function applyContest(contestKey) {
@@ -3615,7 +3525,7 @@ function filterValidContests(contests) {
 
     function applyCountyContest(contestType, year) {
       
-      // Get contest data from Tennessee JSON structure
+      // Get contest data from Maryland JSON structure
       if (!electionData || !electionData.results_by_year || !electionData.results_by_year[year]) {
         return setStatus('No data available for this year');
       }
@@ -3633,7 +3543,7 @@ function filterValidContests(contests) {
         return setStatus('No contest results found');
       }
       
-      // Build color expression for Tennessee counties
+      // Build color expression for Maryland counties
       const expr = ['case'];
       let countiesProcessed = 0;
       
@@ -3653,9 +3563,9 @@ function filterValidContests(contests) {
         // Use categoryColorForMargin for consistent colors
         const color = categoryColorForMargin(marginPct, winner);
         
-        // Match county names (Tennessee uses uppercase in data, proper case in GeoJSON)
-        // Tennessee data: "ANDERSON", GeoJSON: "Anderson" 
-        // Tennessee data: "MONTGOMERY", GeoJSON: "Montgomery"
+        // Match county names between election data and GeoJSON
+        // Example: uppercase source names matched to proper-case GeoJSON names
+        // Example: county names are normalized before matching
         const normalizedCountyName = countyName.replace(/_/g, ' '); // Handle VAN_BUREN -> VAN BUREN
         
         expr.push(['==', ['upcase', ['get', 'NAME20']], normalizedCountyName]);
@@ -3679,7 +3589,7 @@ function filterValidContests(contests) {
       
   // Update contest display (do not show state prefix to avoid brief out-of-state flashes)
   document.getElementById('contest-name').textContent = `${contestData.contest_name} (${year})`;
-      setStatus(`Applied Tennessee contest: ${contestData.contest_name} (${countiesProcessed} counties)`);
+      setStatus(`Applied Maryland contest: ${contestData.contest_name} (${countiesProcessed} counties)`);
     }
 
     function applyDistrictContest(contestType, year) {
@@ -3800,7 +3710,7 @@ function safeFitBounds(map, bounds, options = {}) {
             var center = normalizedBounds.getCenter();
             map.setView([center.lat, center.lng], 7);
         } else {
-            // Fallback: fly to Missouri center
+            // Fallback: fly to Maryland center
             map.flyTo({ center: CONFIG.center, zoom: CONFIG.zoom, offset: [0, 0] });
         }
     } catch (e) {
@@ -3852,7 +3762,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
-  // Set up Tennessee-specific event listeners
+  // Set up Maryland-specific event listeners
   document.getElementById('contestSelect').addEventListener('change', onContestChange);
 
   // Make functions global (already defined above)
@@ -3861,7 +3771,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.toggleLegend = toggleLegend;
 });
 
-// County search functionality - Simple datalist approach like Florida map
+// County search functionality - simple datalist approach
 // Global variable to track last selected county for contest changes
 let lastSelectedCounty = null;
 
@@ -3872,8 +3782,14 @@ function setupCountySearch() {
   if (!countiesSource) return;
   
   let counties = [];
-  if (countiesSource._data && countiesSource._data.features) {
-    counties = countiesSource._data.features.map(f => {
+  const countyFeatures =
+    (window.countiesData && window.countiesData.features) ||
+    (countiesSource._data && countiesSource._data.features) ||
+    (countiesSource.data && countiesSource.data.features) ||
+    [];
+
+  if (countyFeatures.length > 0) {
+    counties = countyFeatures.map(f => {
       const p = f.properties || {};
       const canonical = getFeatureJurisdictionName(p);
       if (!canonical) return null;
@@ -3942,26 +3858,10 @@ function setupCountySearch() {
         dropdown.style.display = 'none';
         return;
       }
-      // Rank matches so "hampton" prefers "City of Hampton" over "Southampton County".
-      function aliasScore(alias, query) {
-        if (alias === query) return 0;
-        if (alias.startsWith(query)) return 1;
-        if (alias.includes(` ${query}`)) return 2;
-        if (alias.includes(query)) return 3;
-        return 99;
-      }
+      // Normalize and match county names - show up to 15 matches
       const matches = counties
-        .map(county => {
-          const best = Math.min(...county.aliases.map(a => aliasScore(a, searchValue)));
-          return { county, score: best };
-        })
-        .filter(item => item.score < 99)
-        .sort((a, b) => {
-          if (a.score !== b.score) return a.score - b.score;
-          return a.county.display.localeCompare(b.county.display);
-        })
-        .slice(0, 15)
-        .map(item => item.county);
+        .filter(county => county.aliases.some(a => a.includes(searchValue)))
+        .slice(0, 15);
       if (matches.length > 0) {
         dropdown.innerHTML = matches.map(county => `
           <div style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6;" 
